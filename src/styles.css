@@ -1,3 +1,69 @@
-/* You can add global styles to this file, and also import other style files */
+/* Importar fuentes PRIMERO */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+/* Luego Tailwind */
 @import "tailwindcss";
+
+/* Variables CSS para light/dark mode */
+:root {
+  --color-primary: #D946EF;
+  --color-background-light: #F3F4F6;
+  --color-background-dark: #111827;
+  --color-surface-dark: #1F2937;
+  --color-text-light: #374151;
+  --color-text-dark: #E5E7EB;
+}
+
+.dark {
+  --color-background: var(--color-background-dark);
+  --color-surface: var(--color-surface-dark);
+  --color-text: var(--color-text-dark);
+}
+
+.light {
+  --color-background: var(--color-background-light);
+  --color-surface: #ffffff;
+  --color-text: var(--color-text-light);
+}
+
+/* Configuración del tema Tailwind */
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-background-light: var(--color-background-light);
+  --color-background-dark: var(--color-background-dark);
+  --color-surface-dark: var(--color-surface-dark);
+  
+  --font-family-display: 'Poppins', sans-serif;
+  --radius-default: 12px;
+  
+  /* Dark mode colors */
+  --color-bg-dark: #111827;
+  --color-text-dark: #E5E7EB;
+  --color-border-dark: #374151;
+}
+
+/* Estilos personalizados */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.hero-clip-path {
+  clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
+}
+
+/* Utilidades personalizadas */
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}

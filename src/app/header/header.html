@@ -1,0 +1,41 @@
+<header class="py-6">
+  <div class="flex justify-between items-center">
+    <!-- Logo -->
+    <div class="flex items-center gap-4">
+      <svg fill="none" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="24" r="11" stroke="#38BDF8" stroke-width="3"></circle>
+        <circle cx="32" cy="24" r="11" stroke="#38BDF8" stroke-width="3"></circle>
+      </svg>
+      <span class="text-3xl font-bold text-primary tracking-wider">SKUISH</span>
+    </div>
+    
+    <!-- Navegación -->
+    <nav class="hidden md:flex items-center space-x-8">
+      <a class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="/">Home</a>
+      <a class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">New Arrivals</a>
+      <a class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Collections</a>
+      <a class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">About</a>
+    </nav>
+    
+    <!-- Acciones -->
+    <div class="flex items-center space-x-6">
+      <!-- Botón modo oscuro/claro -->
+      <button 
+        (click)="toggleDarkMode()"
+        class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+        aria-label="Toggle dark mode"
+        [attr.aria-pressed]="isDarkMode()"
+      >
+        <mat-icon>{{ getDarkModeIcon() }}</mat-icon>
+      </button>
+      
+      <button class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button class="relative text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+        <mat-icon>shopping_bag</mat-icon>
+        <span class="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">1</span>
+      </button>
+    </div>
+  </div>
+</header>

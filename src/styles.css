@@ -7,7 +7,7 @@
 
 /* Variables CSS para light/dark mode */
 :root {
-  --color-primary: #D946EF;
+  --color-primary: #be185d;
   --color-background-light: #F3F4F6;
   --color-background-dark: #111827;
   --color-surface-dark: #1F2937;
@@ -49,10 +49,6 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   transition: background-color 0.3s, color 0.3s;
-}
-
-.hero-clip-path {
-  clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
 }
 
 /* Utilidades personalizadas */

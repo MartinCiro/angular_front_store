@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BlogCardComponent } from '@components/blog-card/blog-card';
+import { ThemeService } from '@services/theme';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,9 @@ import { BlogCardComponent } from '@components/blog-card/blog-card';
   styleUrl: './home.css'
 })
 export class HomeComponent {
+  @Input() post: any;
+  private themeService = inject(ThemeService);
+  isDarkMode = this.themeService.isDarkMode;
   blogPosts = [
     {
       id: 1,
@@ -40,4 +44,9 @@ export class HomeComponent {
       category: "Production"
     }
   ];
+  getSectionClasses() {
+    return this.isDarkMode() 
+      ? 'bg-gray-800 text-gray-200' 
+      : 'bg-white text-gray-800';
+  }
 }

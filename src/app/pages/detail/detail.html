@@ -1,1 +1,128 @@
-<p>detail works!</p>
+<main class="py-12">
+  <div class="flex flex-col lg:flex-row gap-8">
+    
+    <!-- Contenido Principal -->
+    <div [ngClass]="mainContentClasses()" class="flex-1 min-w-0">
+      <article>
+        <!-- Cabecera del artículo -->
+        <div class="mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+            Algoritmos de Clasificación: Una Comparativa
+          </h1>
+          <div class="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+            <img alt="Author Jane Doe" class="w-8 h-8 rounded-full mr-3" 
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0XTDwdpTb3OfmOI6kMkyIubO-RL_ytzJMO05QgfUOQpF3eMOohSdklY_kZZ_NgFpsg0q8yjOU5f0sOrDTimy5tk-DLSX3_52l03e2dBi48QqA2G8KKI-gYhdJy5oWrj0ZbQ_5YNJr8URSGuOnc06lJl32SbPvLugi4Ib8mj2LAG9JHDEgcG4bTr_S8DoBTBJe1HedME-w5SyCNm0PZqgqZl-xRHbnT76U6HsYYMdOFpEKamSFforc7Rl2vwXC35CgnYu2dH-lqfw"/>
+            <span>Por Jane Doe</span>
+            <span class="mx-2">|</span>
+            <time datetime="2024-05-21">21 de Mayo, 2024</time>
+          </div>
+        </div>
+        
+        <!-- Contenido del artículo -->
+        <div class="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+          <h2 class="text-primary">Fundamentos Teóricos</h2>
+          <p>Los algoritmos de clasificación son un componente fundamental en la informática y el análisis de datos. Su objetivo principal es organizar un conjunto de elementos en un orden específico, ya sea numérico, alfabético o basado en algún otro criterio. La eficiencia de un algoritmo de clasificación se mide comúnmente por su complejidad temporal y espacial. En este estudio, nos centraremos en dos algoritmos populares: Bubble Sort y Quick Sort, para analizar sus diferencias en rendimiento y aplicación.</p>
+          
+          <h2 class="text-primary mt-12">Ejemplos de Código</h2>
+          <p>A continuación, se presentan las implementaciones en Python para ambos algoritmos. El código está diseñado para ser claro y demostrativo, facilitando la comprensión de su lógica interna.</p>
+          
+          <h3 class="!mb-2">Bubble Sort</h3>
+          <div class="bg-gray-800 dark:bg-gray-900 rounded-lg overflow-hidden my-4">
+            <pre class="p-4 text-sm text-white overflow-x-auto"><code class="language-python font-mono">
+<span class="text-pink-400">def</span> <span class="text-blue-400">bubble_sort</span>(arr):
+    n = len(arr)
+    <span class="text-pink-400">for</span> i <span class="text-purple-400">in</span> range(n):
+        swapped = <span class="text-yellow-300">False</span>
+        <span class="text-pink-400">for</span> j <span class="text-purple-400">in</span> range(<span class="text-green-400">0</span>, n-i-<span class="text-green-400">1</span>):
+            <span class="text-pink-400">if</span> arr[j] &gt; arr[j+<span class="text-green-400">1</span>]:
+                arr[j], arr[j+<span class="text-green-400">1</span>] = arr[j+<span class="text-green-400">1</span>], arr[j]
+                swapped = <span class="text-yellow-300">True</span>
+        <span class="text-pink-400">if not</span> swapped:
+            <span class="text-pink-400">break</span>
+    <span class="text-pink-400">return</span> arr</code></pre>
+          </div>
+          
+          <h3 class="!mb-2">Quick Sort</h3>
+          <div class="bg-gray-800 dark:bg-gray-900 rounded-lg overflow-hidden my-4">
+            <pre class="p-4 text-sm text-white overflow-x-auto"><code class="language-python font-mono">
+<span class="text-pink-400">def</span> <span class="text-blue-400">quick_sort</span>(arr):
+    <span class="text-pink-400">if</span> len(arr) &lt;= <span class="text-green-400">1</span>:
+        <span class="text-pink-400">return</span> arr
+    <span class="text-pink-400">else</span>:
+        pivot = arr[len(arr) // <span class="text-green-400">2</span>]
+        left = [x <span class="text-pink-400">for</span> x <span class="text-purple-400">in</span> arr <span class="text-pink-400">if</span> x &lt; pivot]
+        middle = [x <span class="text-pink-400">for</span> x <span class="text-purple-400">in</span> arr <span class="text-pink-400">if</span> x == pivot]
+        right = [x <span class="text-pink-400">for</span> x <span class="text-purple-400">in</span> arr <span class="text-pink-400">if</span> x &gt; pivot]
+        <span class="text-pink-400">return</span> quick_sort(left) + middle + quick_sort(right)</code></pre>
+          </div>
+          
+          <h2 class="text-primary mt-12">Resultados Visualizados</h2>
+          <p>Para demostrar la diferencia de rendimiento, ejecutamos ambos algoritmos en un conjunto de datos de 10,000 elementos aleatorios. Los resultados, que muestran el tiempo de ejecución en segundos, se visualizan en el siguiente gráfico de barras. Es evidente que Quick Sort supera significativamente a Bubble Sort en este escenario.</p>
+        </div>
+        
+        <div class="my-8">
+          <img alt="Gráfico de barras comparando el rendimiento de los algoritmos de clasificación" 
+               class="w-full h-auto rounded-lg shadow-md" 
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKwObVXS73q1Qioa15V2Rjy996BkQd14yy6MHL11-7g3soL58C0WmjKwIjeuFA_bv112G9GrmhhAljEfxgWT7kaRos19mL2hVpfd2243sg1daS09Wpzf8Gha2Ff8l49d--lCcE2tzX_jdbtQHnpKX_S22WBYYlC_JuEe29RqXnebAgyHlztVjq0YUfcgfmHrgQFbCr_byyxMz60pkvraAcNmZs-hy3dn_ZV1T2AC9B8QhVAqNYRS8FdLB52K3arnE4kxPWhgajgOE"/>
+          <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+            Fig. 1: Comparativa de tiempo de ejecución entre Bubble Sort y Quick Sort.
+          </p>
+        </div>
+      </article>
+    </div>
+    
+    <!-- Sidebar -->
+    <aside *ngIf="sidebarOpen()" 
+           [ngClass]="sidebarClasses()"
+           class="lg:w-80 lg:flex-shrink-0 transition-all duration-300">
+      <div class="space-y-8 sticky top-8">
+        <!-- Publicaciones Relacionadas -->
+        <div [ngClass]="isDarkMode() ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'" 
+             class="p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold text-primary mb-4">Publicaciones Relacionadas</h3>
+          <ul class="space-y-4">
+            <li>
+              <a class="group block hover:text-primary transition-colors" href="#">
+                <p class="font-semibold group-hover:text-primary">Una Introducción a las Estructuras de Datos</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">18 de Mayo, 2024</p>
+              </a>
+            </li>
+            <li>
+              <a class="group block hover:text-primary transition-colors" href="#">
+                <p class="font-semibold group-hover:text-primary">Optimización de Algoritmos: Big O Notation</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">15 de Mayo, 2024</p>
+              </a>
+            </li>
+            <li>
+              <a class="group block hover:text-primary transition-colors" href="#">
+                <p class="font-semibold group-hover:text-primary">Merge Sort vs. Heap Sort</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">12 de Mayo, 2024</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Populares Esta Semana -->
+        <div [ngClass]="isDarkMode() ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'" 
+             class="p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold text-primary mb-4">Populares Esta Semana</h3>
+          <ul class="space-y-4">
+            <li><a class="hover:text-primary transition-colors block" href="#">Desplegando una App con Docker</a></li>
+            <li><a class="hover:text-primary transition-colors block" href="#">Primeros Pasos con React Hooks</a></li>
+            <li><a class="hover:text-primary transition-colors block" href="#">Guía de Estilos en Tailwind CSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    
+  </div>
+  
+  <!-- Botón para toggle sidebar -->
+  <div class="fixed bottom-6 right-6">
+    <button [ngClass]="buttonClasses()" 
+            (click)="toggleSidebar()"
+            class="bg-primary hover:bg-fuchsia-600 text-white rounded-full p-3 shadow-lg transition-transform duration-300 transform">
+      <mat-icon>{{ buttonIcon() }}</mat-icon>
+    </button>
+  </div>
+</main>

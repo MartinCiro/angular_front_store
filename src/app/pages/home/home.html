@@ -1,4 +1,13 @@
 <div class="py-8">
+  <!-- Hero Section con clases dinámicas -->
+  <section class="my-8">
+    <div class="hero-clip-path py-16 px-8 flex items-center justify-center text-center" [ngClass]="heroClasses()">
+      <div class="backdrop-blur-sm p-8 rounded-full shadow-lg" [ngClass]="heroContentClasses()">
+        <h1 class="text-4xl md:text-6xl font-bold text-primary tracking-widest">SKUISH BLOG</h1>
+        <p class="mt-4 text-lg">Your daily dose of cute, cuddly, and creative content!</p>
+      </div>
+    </div>
+  </section>
   <h2 class="text-3xl font-bold text-primary mb-8">Discover Our Topics</h2>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -6,36 +15,28 @@
   </div>
 
   <!-- Sección con clases dinámicas -->
-  <div 
-    class="mt-12 rounded-xl p-8 shadow-lg border"
+  <div class="mt-12 rounded-xl p-8 shadow-lg border"
     [class]="isDarkMode() ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'">
-    
-    <h3 
-      class="text-2xl font-bold mb-4"
-      [class]="isDarkMode() ? 'text-white' : 'text-gray-800'">
+
+    <h3 class="text-2xl font-bold mb-4" [class]="isDarkMode() ? 'text-white' : 'text-gray-800'">
       Welcome to Skuish Blog! 🎉
     </h3>
-    
-    <p 
-      class="mb-4"
-      [class]="isDarkMode() ? 'text-gray-300' : 'text-gray-600'">
-      Discover the cutest, most cuddly content on the internet! From DIY crafts to collector's tips, 
+
+    <p class="mb-4" [class]="isDarkMode() ? 'text-gray-300' : 'text-gray-600'">
+      Discover the cutest, most cuddly content on the internet! From DIY crafts to collector's tips,
       we have everything for squishy enthusiasts.
     </p>
-    
+
     <div class="flex gap-4 mt-6">
-      <span 
-        class="px-3 py-1 rounded-full text-sm"
+      <span class="px-3 py-1 rounded-full text-sm"
         [class]="isDarkMode() ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-800'">
         DIY
       </span>
-      <span 
-        class="px-3 py-1 rounded-full text-sm"
+      <span class="px-3 py-1 rounded-full text-sm"
         [class]="isDarkMode() ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800'">
         Collecting
       </span>
-      <span 
-        class="px-3 py-1 rounded-full text-sm"
+      <span class="px-3 py-1 rounded-full text-sm"
         [class]="isDarkMode() ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'">
         Community
       </span>

@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BlogCardComponent } from '@components/blog-card/blog-card';
 import { ThemeService } from '@services/theme';
@@ -44,6 +44,19 @@ export class HomeComponent {
       category: "Production"
     }
   ];
+
+  heroContentClasses = computed(() =>
+    this.isDarkMode()
+      ? 'bg-gray-800/80 text-gray-300'
+      : 'bg-white/80 text-gray-700'
+  );
+
+  heroClasses = computed(() =>
+    this.isDarkMode()
+      ? 'bg-green-600'
+      : 'bg-[#4ADE80]'
+  );
+
   getSectionClasses() {
     return this.isDarkMode() 
       ? 'bg-gray-800 text-gray-200' 

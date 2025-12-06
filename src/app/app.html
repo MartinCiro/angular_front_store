@@ -1,27 +1,16 @@
 <!-- Usamos las computed signals del componente -->
-<div class="min-h-screen" [ngClass]="isDarkMode() ? 'bg-background-dark text-gray-200' : 'bg-background-light text-gray-800'">
+<div class="min-h-screen"
+  [ngClass]="isDarkMode() ? 'bg-background-dark text-gray-200' : 'bg-background-light text-gray-800'">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 border-2 rounded-2xl" [ngClass]="containerClasses()">
-    
+
     <!-- Header Component -->
     <app-header />
-    
-    <!-- Hero Section con clases dinámicas -->
-    <section class="my-8">
-      <div class="hero-clip-path py-16 px-8 flex items-center justify-center text-center" [ngClass]="heroClasses()">
-        <div class="backdrop-blur-sm p-8 rounded-full shadow-lg" [ngClass]="heroContentClasses()">
-          <h1 class="text-4xl md:text-6xl font-bold text-primary tracking-widest">SKUISH BLOG</h1>
-          <p class="mt-4 text-lg">Your daily dose of cute, cuddly, and creative content!</p>
-        </div>
-      </div>
-    </section>
 
     <!-- Router Outlet para las páginas -->
-    <main class="py-8">
-      <router-outlet />
-    </main>
+    <router-outlet />
 
     <!-- Footer Component -->
     <app-footer />
-    
+
   </div>
 </div>

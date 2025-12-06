@@ -26,18 +26,6 @@ export class App implements OnInit {
       : 'border-blue-400'
   );
   
-  heroClasses = computed(() =>
-    this.isDarkMode()
-      ? 'bg-green-600'
-      : 'bg-[#4ADE80]'
-  );
-  
-  heroContentClasses = computed(() =>
-    this.isDarkMode()
-      ? 'bg-gray-800/80 text-gray-300'
-      : 'bg-white/80 text-gray-700'
-  );
-  
   ngOnInit() {
     // Verificar que el tema está aplicado
     console.log('App Component - Dark Mode active:', this.isDarkMode());

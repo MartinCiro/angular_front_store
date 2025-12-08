@@ -1,28 +1,42 @@
-import { Component, inject } from '@angular/core';
+// header.ts (componente corregido)
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject, computed } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { 
+  LucideAngularModule, 
+  Search, 
+  ShoppingBag, 
+  Menu,
+  Sun,
+  Moon
+} from 'lucide-angular';
+
 import { ThemeService } from '@services/theme';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
 export class HeaderComponent {
-  // Usar inject() para obtener el servicio
   private themeService = inject(ThemeService);
   
-  // Usar la computed signal del servicio
+  // Signals
   isDarkMode = this.themeService.isDarkMode;
-  currentTheme = this.themeService.currentTheme;
-
+  
+  // Iconos
+  readonly Search = Search;
+  readonly ShoppingBag = ShoppingBag;
+  readonly Menu = Menu;
+  readonly Sun = Sun;
+  readonly Moon = Moon;
+  
+  // Icono dinámico para tema
+  themeIcon = computed(() => this.isDarkMode() ? this.Sun : this.Moon);
+  
   toggleDarkMode() {
     this.themeService.toggleTheme();
-  }
-
-  getDarkModeIcon(): string {
-    return this.isDarkMode() ? 'light_mode' : 'dark_mode';
   }
 }

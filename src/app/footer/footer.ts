@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { 
+  LucideAngularModule, 
+  Facebook, 
+  Twitter, 
+  Instagram 
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
   templateUrl: './footer.html',
   styleUrl: './footer.css'
 })
-export class FooterComponent {}
+export class FooterComponent {
+  // Definir los iconos
+  readonly Facebook = Facebook;
+  readonly Twitter = Twitter;
+  readonly Instagram = Instagram;
+}

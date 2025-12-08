@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from "./header/header";
 import { FooterComponent } from "./footer/footer";
 import { MatIconModule } from '@angular/material/icon';
+import { LucideAngularModule, FileIcon } from 'lucide-angular';
 import { ThemeService } from '@services/theme';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, MatIconModule],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, MatIconModule, LucideAngularModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

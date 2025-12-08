@@ -20,4 +20,5 @@ export class FooterComponent {
   readonly Facebook = Facebook;
   readonly Twitter = Twitter;
   readonly Instagram = Instagram;
+  currentYear: number = new Date().getFullYear();
 }

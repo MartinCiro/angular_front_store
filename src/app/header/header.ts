@@ -1,4 +1,3 @@
-// header.ts (componente corregido)
 import { CommonModule } from '@angular/common';
 import { Component, inject, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -10,7 +9,6 @@ import {
   Sun,
   Moon
 } from 'lucide-angular';
-
 import { ThemeService } from '@services/theme';
 
 @Component({
@@ -23,7 +21,7 @@ import { ThemeService } from '@services/theme';
 export class HeaderComponent {
   private themeService = inject(ThemeService);
   
-  // Signals
+  // Signals existentes
   isDarkMode = this.themeService.isDarkMode;
   
   // Iconos
@@ -35,6 +33,28 @@ export class HeaderComponent {
   
   // Icono dinámico para tema
   themeIcon = computed(() => this.isDarkMode() ? this.Sun : this.Moon);
+  
+  // ✅ NUEVO: Signals computados para clases
+  // Logo
+  logoClasses = computed(() => ({
+    'text-primary': this.isDarkMode(),
+    'text-gray-900': !this.isDarkMode()
+  }));
+  
+  // Navegación
+  navClasses = computed(() => 
+    this.isDarkMode() ? 'text-light' : 'text-gray-900'
+  );
+  
+  // Iconos
+  iconColor = computed(() => 
+    this.isDarkMode() ? 'text-white-400' : 'text-gray-800'
+  );
+  
+  // Icono de tema (color especial)
+  themeIconColor = computed(() => 
+    this.isDarkMode() ? 'text-yellow-400' : 'text-gray-800'
+  );
   
   toggleDarkMode() {
     this.themeService.toggleTheme();

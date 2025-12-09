@@ -1,63 +1,86 @@
 <header class="py-6">
-<div class="flex justify-between items-center container mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex justify-between items-center container mx-auto px-4 sm:px-6 lg:px-8">
     
-    <!-- Logo (sin cambios) -->
+    <!-- Logo - OPTIMIZADO CON SIGNAL -->
     <div class="flex items-center gap-4">
       <svg fill="none" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="24" r="11" class="stroke-primary dark:stroke-accent-blue" stroke-width="3"></circle>
         <circle cx="32" cy="24" r="11" class="stroke-primary dark:stroke-accent-blue" stroke-width="3"></circle>
       </svg>
-      <span class="font-display text-3xl font-bold {{ isDarkMode() ? 'text-primary' : 'text-gray-900' }} dark:text-accent-blue tracking-wider">
+      <span class="font-display text-3xl font-bold tracking-wider dark:text-accent-blue"
+            [ngClass]="logoClasses()">
         SKUISH
       </span>
     </div>
 
+    <!-- Navegación - OPTIMIZADO CON SIGNAL -->
     <nav class="hidden md:flex items-center space-x-8">
-      <a routerLink="/" class="font-medium {{ isDarkMode() ? 'text-light' : 'text-gray-900' }} hover:text-primary dark:hover:text-accent-blue transition-colors">
+      <a routerLink="/" 
+         class="font-medium hover:text-primary dark:hover:text-accent-blue transition-colors"
+         [ngClass]="navClasses()">
         Home
       </a>
-      <a routerLink="/new-arrivals" class="font-medium {{ isDarkMode() ? 'text-light' : 'text-gray-900' }} hover:text-primary dark:hover:text-accent-blue transition-colors">
+      <a routerLink="/new-arrivals" 
+         class="font-medium hover:text-primary dark:hover:text-accent-blue transition-colors"
+         [ngClass]="navClasses()">
         New Arrivals
       </a>
-      <a routerLink="/collections" class="font-medium {{ isDarkMode() ? 'text-light' : 'text-gray-900' }} hover:text-primary dark:hover:text-accent-blue transition-colors">
+      <a routerLink="/collections" 
+         class="font-medium hover:text-primary dark:hover:text-accent-blue transition-colors"
+         [ngClass]="navClasses()">
         Collections
       </a>
-      <a routerLink="/about" class="font-medium {{ isDarkMode() ? 'text-light' : 'text-gray-900' }} hover:text-primary dark:hover:text-accent-gray transition-colors">
+      <a routerLink="/about" 
+         class="font-medium hover:text-primary dark:hover:text-accent-gray transition-colors"
+         [ngClass]="navClasses()">
         About
       </a>
     </nav>
 
-    <!-- Acciones - CON BOTONES QUE CAMBIAN BLANCO/NEGRO -->
+    <!-- Acciones - OPTIMIZADO CON SIGNALS -->
     <div class="flex items-center space-x-4">
       
-      <!-- Botón de búsqueda - Fondo blanco/negro -->
-      <button class="p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105" aria-label="Search">
-        <i-lucide [name]="Search" class="h-5 w-5 {{ isDarkMode() ? 'text-white-400' : 'text-gray-800' }}" [strokeWidth]="1.8"></i-lucide>
-      </button>
-
-      <!-- Botón de tema - Fondo blanco/negro -->
-      <button (click)="toggleDarkMode()"
-        class="p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105 "
-        [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'">
-  
-        <i-lucide [name]="themeIcon()" 
-                  class="h-5 w-5 {{ isDarkMode() ? 'text-yellow-400' : 'text-gray-800' }}"
+      <!-- Botón de búsqueda -->
+      <button class="p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105" 
+              aria-label="Search">
+        <i-lucide [name]="Search" 
+                  class="h-5 w-5" 
+                  [ngClass]="iconColor()"
                   [strokeWidth]="1.8">
         </i-lucide>
       </button>
 
-      <!-- Botón de carrito - Fondo blanco/negro -->
-      <button class="relative p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105" aria-label="Shopping cart">
-        <i-lucide [name]="ShoppingBag" class="h-5 w-5 {{ isDarkMode() ? 'text-white-400' : 'text-gray-800' }}" [strokeWidth]="1.8"></i-lucide>
-        <!-- Badge del carrito -->
+      <!-- Botón de tema - MÁXIMO RENDIMIENTO -->
+      <button (click)="toggleDarkMode()"
+              class="p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105"
+              [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'">
+        <i-lucide [name]="themeIcon()" 
+                  class="h-5 w-5" 
+                  [ngClass]="themeIconColor()"
+                  [strokeWidth]="1.8">
+        </i-lucide>
+      </button>
+
+      <!-- Botón de carrito -->
+      <button class="relative p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105" 
+              aria-label="Shopping cart">
+        <i-lucide [name]="ShoppingBag" 
+                  class="h-5 w-5" 
+                  [ngClass]="iconColor()"
+                  [strokeWidth]="1.8">
+        </i-lucide>
         <span class="absolute top-1 right-1 w-5 h-5 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
           3
         </span>
       </button>
 
-      <!-- Menú móvil - Fondo blanco/negro -->
-      <button class="md:hidden p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105" aria-label="Menu">
-        <i-lucide [name]="Menu" class="h-5 w-5 {{ isDarkMode() ? 'text-white-400' : 'text-gray-800' }}" [strokeWidth]="1.8">
+      <!-- Menú móvil -->
+      <button class="md:hidden p-3 rounded-full transition-all duration-200 hover:shadow-md hover:scale-105" 
+              aria-label="Menu">
+        <i-lucide [name]="Menu" 
+                  class="h-5 w-5" 
+                  [ngClass]="iconColor()"
+                  [strokeWidth]="1.8">
         </i-lucide>
       </button>
     </div>

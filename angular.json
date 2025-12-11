@@ -28,10 +28,7 @@
               "src/styles.css"
             ],
             "server": "src/main.server.ts",
-            "ssr": {
-              "entry": "src/server.ts"
-            },
-            "prerender": false  
+            "prerender": false
           },
           "configurations": {
             "production": {
@@ -66,8 +63,7 @@
               "buildTarget": "blog:build:production"
             },
             "development": {
-              "buildTarget": "blog:build:development",
-              "ssr": true
+              "buildTarget": "blog:build:development"
             }
           },
           "defaultConfiguration": "development"

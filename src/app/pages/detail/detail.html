@@ -1,226 +1,127 @@
-<!-- src/app/pages/detail/detail.html -->
 <main class="py-12">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    
-    <!-- Loading State -->
-    @if (isLoading()) {
-      <div class="flex justify-center items-center py-20">
-        <div class="text-center">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  <div class="flex flex-col lg:flex-row gap-8">
+
+    <!-- Contenido Principal -->
+    <div [ngClass]="mainContentClasses()" class="flex-1 min-w-0">
+      
+      @if (isLoading()) {
+        <!-- Loading State -->
+        <div class="text-center py-12">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           <p class="mt-4 text-gray-600 dark:text-gray-400">Cargando artículo...</p>
         </div>
-      </div>
-    }
-    
-    
-    <!-- Content -->
-    @if (article() && !isLoading()) {
-      <div class="flex flex-col lg:flex-row gap-8">
-        
-        <!-- Contenido Principal -->
-        <div [ngClass]="mainContentClasses()" class="flex-1 min-w-0">
-          <article>
-            <!-- Cabecera del artículo -->
-            <header class="mb-8 pb-6 border-b border-gray-200 dark:border-gray-800">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="px-3 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                  {{ article()!.category }}
-                </span>
-                <span class="text-sm text-gray-500 dark:text-gray-400">
-                  • Actualizado {{ currentTime() | date:'HH:mm' }}
-                </span>
-              </div>
-              
-              <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4">
-                {{ article()!.title }}
-              </h1>
-              
-              <div class="flex flex-wrap items-center gap-4 text-gray-500 dark:text-gray-400 text-sm">
-                <!-- Autor -->
-                <div class="flex items-center">
-                  <img [alt]="'Autor ' + article()!.author" 
-                       [src]="article()!.authorAvatar" 
-                       class="w-10 h-10 rounded-full mr-3" />
-                  <div>
-                    <p class="font-medium text-gray-700 dark:text-gray-300">{{ article()!.author }}</p>
-                    <p class="text-xs">{{ article()!.publishDate }}</p>
-                  </div>
-                </div>
-                
-                <!-- Stats -->
-                <div class="flex items-center gap-4 ml-auto">
-                  <span class="flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    {{ article()!.readTime }}
-                  </span>
-                  
-                  <span class="flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                    {{ article()!.views.toLocaleString() }} vistas
-                  </span>
-                </div>
-              </div>
-              
-              <!-- Tags -->
-              @if (article()!.tags && article()!.tags.length > 0) {
-                <div class="flex flex-wrap gap-2 mt-4">
-                  @for (tag of article()!.tags; track tag) {
-                    <span class="px-3 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                      {{ tag }}
-                    </span>
-                  }
-                </div>
-              }
-            </header>
-            
-            <!-- Excerpt -->
-            @if (article()!.excerpt) {
-              <div class="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p class="text-lg text-gray-700 dark:text-gray-300 italic">
-                  {{ article()!.excerpt }}
-                </p>
-              </div>
-            }
-            
-            <!-- Contenido del artículo (dinámico) -->
-            <div class="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 mb-12"
-                 [innerHTML]="article()!.content">
-            </div>
-            
-            <!-- Ejemplos de código dinámicos -->
-            @if (filteredCodeExamples().length > 0) {
-              <section class="mb-12">
-                <h2 class="text-3xl font-bold text-primary mb-6">Ejemplos de Código</h2>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">
-                  Implementaciones prácticas relacionadas con {{ article()!.category }}:
-                </p>
-                
-                @for (example of filteredCodeExamples(); track example.id) {
-                  <div class="mb-8">
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                      {{ example.title }}
-                    </h3>
-                    
-                    <app-code-block
-                      [code]="example.code"
-                      [language]="example.language"
-                      [filename]="example.filename || example.title.toLowerCase().replace(/\s+/g, '-') + '.' + example.language"
-                      [showLineNumbers]="true"
-                      [variant]="'default'">
-                    </app-code-block>
-                  </div>
-                }
-              </section>
-            }
-            
-            <!-- Sección dinámica según categoría -->
-            @switch (article()!.category) {
-              @case ('Algoritmos') {
-                <section class="mb-12">
-                  <h2 class="text-3xl font-bold text-primary mb-6">Comparativa de Rendimiento</h2>
-                  
-                  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-                    <div class="h-64 flex items-end justify-center space-x-8">
-                      <!-- Bubble Sort Bar -->
-                      <div class="flex flex-col items-center">
-                        <div class="w-20 bg-red-500 rounded-t-lg transition-all duration-1000"
-                             [style.height.%]="100">
-                          <div class="text-center text-white text-sm font-bold mt-2">45.2s</div>
-                        </div>
-                        <span class="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">Bubble Sort</span>
-                      </div>
-                      
-                      <!-- Quick Sort Bar -->
-                      <div class="flex flex-col items-center">
-                        <div class="w-20 bg-green-500 rounded-t-lg transition-all duration-1000"
-                             [style.height.%]="2.5">
-                          <div class="text-center text-white text-sm font-bold mt-2">1.1s</div>
-                        </div>
-                        <span class="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">Quick Sort</span>
-                      </div>
-                    </div>
-                    
-                    <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
-                      <p class="text-center text-sm text-gray-600 dark:text-gray-400">
-                        <strong>Figura 1:</strong> Comparativa de tiempo de ejecución (10,000 elementos aleatorios)
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              }
-              
-              @case ('Angular') {
-                <section class="mb-12">
-                  <h2 class="text-3xl font-bold text-primary mb-6">Recursos Adicionales</h2>
-                  
-                  <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-6 rounded-lg border bg-gray-50 dark:bg-gray-800">
-                      <h3 class="text-xl font-bold mb-3">Documentación Oficial</h3>
-                      <ul class="space-y-2">
-                        <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Angular Signals Guide</a></li>
-                        <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Change Detection</a></li>
-                        <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Performance Best Practices</a></li>
-                      </ul>
-                    </div>
-                    
-                    <div class="p-6 rounded-lg border bg-gray-50 dark:bg-gray-800">
-                      <h3 class="text-xl font-bold mb-3">Herramientas Recomendadas</h3>
-                      <ul class="space-y-2">
-                        <li>Angular CLI</li>
-                        <li>NgRx para state management</li>
-                        <li>Jest para testing</li>
-                      </ul>
-                    </div>
-                  </div>
-                </section>
-              }
-            }
-            
-            <!-- Call to Action -->
-            <div class="mt-12 p-8 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white text-center">
-              <h3 class="text-2xl font-bold mb-4">¿Te gustó este artículo?</h3>
-              <p class="mb-6 opacity-90">
-                Suscríbete para recibir más contenido sobre {{ article()!.category }} y desarrollo web.
-              </p>
-              <button class="px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-gray-100 transition-colors">
-                Suscribirme al Newsletter
-              </button>
-            </div>
-          </article>
+      } @else if (error()) {
+        <!-- Error State -->
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+          <h2 class="text-xl font-bold text-red-800 dark:text-red-300 mb-2">Error</h2>
+          <p class="text-red-700 dark:text-red-400">{{ error() }}</p>
+          <button (click)="loadDefaultArticlePublic()" 
+                  class="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+            Cargar artículo por defecto
+          </button>
         </div>
+      } @else if (article()) {
+      <article>
+        <!-- Cabecera del artículo - DINÁMICO -->
+        <div class="mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+            {{ article()?.title }}
+          </h1>
+          <div class="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+            <img [alt]="'Author ' + article()?.author" 
+                 [src]="article()?.authorAvatar" 
+                 class="w-8 h-8 rounded-full mr-3" />
+            <span>Por {{ article()?.author }}</span>
+            <span class="mx-2">|</span>
+            <time [attr.datetime]="article()?.publishDate">{{ article()?.publishDate }}</time>
+            <span class="mx-2">|</span>
+            <span>{{ article()?.readTime }}</span>
+            <span class="mx-2">|</span>
+            <span>{{ article()?.views }} vistas</span>
+          </div>
+          
+          <!-- Tags -->
+          @if (article()?.tags && article()!.tags.length > 0) {
+          <div class="flex flex-wrap gap-2 mt-4">
+            @for (tag of article()!.tags; track tag) {
+            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm">
+              {{ tag }}
+            </span>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Contenido del artículo - DINÁMICO -->
+        <div class="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 mb-8">
+          <p class="text-lg italic text-gray-600 dark:text-gray-400 mb-6">
+            {{ article()?.excerpt }}
+          </p>
+          
+          <!-- Contenido HTML del artículo -->
+          <div [innerHTML]="article()?.content"></div>
+        </div>
+
+        <!-- Ejemplos de código relacionados - DINÁMICO -->
+        @if (filteredCodeExamples() && filteredCodeExamples().length > 0) {
+        <div class="mb-12">
+          <h2 class="text-3xl font-bold text-primary mb-6">Ejemplos de Código Relacionados</h2>
+
+          @for (example of filteredCodeExamples(); track example.id) {
+          <div class="mb-8">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3">
+              {{ example.title }}
+            </h3>
+
+            @if (example.description) {
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+              {{ example.description }}
+            </p>
+            }
+
+            <!-- Componente CodeBlock -->
+            <app-code-block 
+              [code]="example.code"
+              [language]="example.language"
+              [filename]="example.filename ?? ''"
+              [description]="example.description ?? ''">
+            </app-code-block>
+          </div>
+          }
+        </div>
+        } @else {
+        <div class="mb-12">
+          <h2 class="text-3xl font-bold text-primary mb-6">Ejemplos de Código</h2>
+          <p class="text-gray-500 dark:text-gray-400">
+            No hay ejemplos de código disponibles para esta categoría.
+          </p>
+        </div>
+        }
         
-        <!-- Sidebar Component -->
-        <app-sidebar
-          [isOpen]="sidebarOpen()"  
-          [relatedPosts]="getSidebarData().relatedPosts"
-          [popularTopics]="getSidebarData().popularTopics"
-          [categoriesTitle]="'Categorías Relacionadas'"
-          [showRelated]="true"
-          [showPopular]="true"
-          [showCategories]="true"
-          class="lg:w-80 lg:flex-shrink-0 transition-all duration-300">
-        </app-sidebar>
-      </div>
-    }
+      </article>
+      } @else {
+        <!-- No article found -->
+        <div class="text-center py-12">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Artículo no encontrado</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">El artículo que buscas no está disponible.</p>
+          <button (click)="loadDefaultArticlePublic()" 
+                  class="px-4 py-2 bg-primary hover:bg-fuchsia-600 text-white rounded-lg">
+            Ver artículo por defecto
+          </button>
+        </div>
+      }
+    </div>
+
     
-    <!-- Botón para toggle sidebar -->
-    @if (article() && !isLoading()) {
-      <div class="fixed bottom-6 right-6 z-50">
-        <button [ngClass]="buttonClasses()" 
-                (click)="toggleSidebar()"
-                class="bg-primary hover:bg-primary/90 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110"
-                [attr.aria-label]="sidebarButtonLabel()">
-          <mat-icon>{{ buttonIcon() }}</mat-icon>
-        </button>
-      </div>
-    }
+
+  </div>
+
+  <!-- Botón para toggle sidebar -->
+  <div class="fixed bottom-6 right-6">
+    <button [ngClass]="buttonClasses()" (click)="toggleSidebar()"
+      class="bg-primary hover:bg-fuchsia-600 text-white rounded-full p-3 shadow-lg transition-transform duration-300 transform"
+      [attr.aria-label]="sidebarButtonLabel()">
+      <mat-icon>{{ buttonIcon() }}</mat-icon>
+    </button>
   </div>
 </main>

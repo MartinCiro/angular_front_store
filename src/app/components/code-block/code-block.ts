@@ -8,7 +8,6 @@ import {
   computed,
   ChangeDetectionStrategy,
   DestroyRef,
-  HostBinding,
   ViewEncapsulation
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -48,56 +47,102 @@ const LANGUAGE_COLORS: Record<string, { light: string, dark: string }> = {
   templateUrl: './code-block.html',
   styleUrls: ['./code-block.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  // 🚀 Host binding para clases dinámicas
-  host: {
-    '[class]': `getHostClasses()`,
-    '[attr.data-variant]': 'variant()',
-    '[attr.data-language]': 'language()'
-  }
+  encapsulation: ViewEncapsulation.None
 })
 export class CodeBlockComponent {
   private themeService = inject(ThemeService);
   private destroyRef = inject(DestroyRef);
   
-  // 🚀 INPUTS OPTIMIZADOS con valores por defecto claros
-  @Input({ required: true, transform: (v: string) => v?.trim() || '' }) 
-  code = signal('');
+  // 🚀 Signals internos
+  private _code = signal('');
+  private _language = signal('typescript');
+  private _filename = signal('');
+  private _description = signal('');
+  private _variant = signal<CodeVariant>('default');
   
-  @Input({ transform: (v: string) => v?.toLowerCase() || 'typescript' }) 
-  language = signal('typescript');
+  // 🚀 Inputs tradicionales con setters
+  @Input() 
+  set code(value: string) {
+    this._code.set(value?.trim() || '');
+  }
+  get code(): string {
+    return this._code();
+  }
   
-  @Input({ transform: (v: string) => v || '' }) 
-  filename = signal('');
+  @Input() 
+  set language(value: string) {
+    this._language.set(value?.toLowerCase() || 'typescript');
+  }
+  get language(): string {
+    return this._language();
+  }
   
-  @Input({ transform: (v: string) => v || '' }) 
-  description = signal('');
+  @Input() 
+  set filename(value: string | undefined) {
+    this._filename.set(value || '');
+  }
+  get filename(): string {
+    return this._filename();
+  }
   
-  @Input({ transform: (v: boolean) => !!v }) 
-  collapsible = signal(false);
+  @Input() 
+  set description(value: string | undefined) {
+    this._description.set(value || '');
+  }
+  get description(): string {
+    return this._description();
+  }
   
-  @Input({ transform: (v: boolean) => v !== false }) 
-  showBorder = signal(true);
+  @Input() 
+  set variant(value: CodeVariant) {
+    this._variant.set(value || 'default');
+  }
+  get variant(): CodeVariant {
+    return this._variant();
+  }
   
-  @Input({ transform: (v: CodeVariant) => v || 'default' }) 
-  variant = signal<CodeVariant>('default');
+  // 🚀 Otros inputs que pueden mantenerse como signal inputs
+  private _collapsible = signal(false);
+  private _showBorder = signal(true);
+  private _showLineNumbers = signal(false);
+  private _showCopyButton = signal(true);
+  private _showHeader = signal(true);
+  private _display = signal<'block' | 'inline'>('block');
   
-  @Input({ transform: (v: boolean) => !!v }) 
-  showLineNumbers = signal(false);
+  @Input() 
+  set collapsible(value: boolean) {
+    this._collapsible.set(!!value);
+  }
   
-  @Input({ transform: (v: boolean) => v !== false }) 
-  showCopyButton = signal(true);
+  @Input() 
+  set showBorder(value: boolean) {
+    this._showBorder.set(value !== false);
+  }
   
-  @Input({ transform: (v: boolean) => !!v }) 
-  showHeader = signal(true);
+  @Input() 
+  set showLineNumbers(value: boolean) {
+    this._showLineNumbers.set(!!value);
+  }
   
-  @Input({ transform: (v: string) => v || 'block' }) 
-  display = signal<'block' | 'inline'>('block');
+  @Input() 
+  set showCopyButton(value: boolean) {
+    this._showCopyButton.set(value !== false);
+  }
+  
+  @Input() 
+  set showHeader(value: boolean) {
+    this._showHeader.set(!!value);
+  }
+  
+  @Input() 
+  set display(value: 'block' | 'inline') {
+    this._display.set(value || 'block');
+  }
   
   // 🚀 Signals de estado interno
   isCollapsed = signal(false);
   copied = signal(false);
-  lineCount = computed(() => this.code().split('\n').length);
+  lineCount = computed(() => this._code().split('\n').length);
   
   // 🚀 Signal del tema
   isDarkMode = computed(() => this.themeService.isDarkMode());
@@ -108,93 +153,67 @@ export class CodeBlockComponent {
   readonly ChevronDown = ChevronDown;
   readonly ChevronUp = ChevronUp;
   readonly CodeIcon = Code;
+  
   ngOnInit() {
-    effect(() => {
-      console.log(
-        '%c[CodeBlock] Código recibido:',
-        'color: #4ade80; font-weight: bold',
-        this.code()
-      );
-    });
+    console.log(
+      '%c[CodeBlock] Componente inicializado',
+      'color: #4ade80; font-weight: bold'
+    );
   }
 
   consoleLogCode() {
     console.log(
       '%c[CodeBlock] Click → valor actual del code():',
       'color: #60a5fa; font-weight: bold',
-      this.code()
+      this.code
     );
   }
   
-  // 🚀 COMPUTED OPTIMIZADOS: Memoizado completo
-  private computedStyles = computed(() => {
+  // 🚀 Métodos para obtener estilos
+  getStyles() {
     const isDark = this.isDarkMode();
-    const variant = this.variant();
-    const language = this.language();
     
     return {
-      // Classes para el wrapper
-      wrapperClasses: this.getWrapperClasses(isDark, variant),
-      
-      // Header
-      headerClasses: this.getHeaderClasses(isDark, variant),
-      
-      // Code container
-      codeClasses: this.getCodeClasses(isDark, variant),
-      
-      // Footer
+      wrapperClasses: this.getWrapperClasses(),
+      headerClasses: this.getHeaderClasses(),
+      codeClasses: this.getCodeClasses(),
       footerClasses: isDark 
         ? 'border-gray-800 bg-gray-900/50' 
         : 'border-gray-200 bg-gray-50',
-      
-      // Description
       descriptionClasses: isDark 
         ? 'text-gray-400' 
         : 'text-gray-600',
-      
-      // Language badge
-      languageBadgeClasses: this.getLanguageBadgeClasses(isDark, language),
-      
-      // Dots (solo para variant default)
+      languageBadgeClasses: this.getLanguageBadgeClasses(),
       dotClasses: isDark 
         ? ['bg-red-500', 'bg-yellow-500', 'bg-green-500'] 
         : ['bg-red-400', 'bg-yellow-400', 'bg-green-400'],
-      
-      // Copy button
-      copyButtonClasses: this.getCopyButtonClasses(isDark, this.copied()),
-      
-      // Collapse button
+      copyButtonClasses: this.getCopyButtonClasses(),
       collapseButtonClasses: isDark 
         ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-800' 
         : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200',
-      
-      // Overlay
       overlayClasses: isDark 
         ? 'from-gray-900/90 to-transparent' 
         : 'from-white/90 to-transparent',
-      
-      // Expand button
-      expandButtonClasses: this.getExpandButtonClasses(isDark)
+      expandButtonClasses: this.getExpandButtonClasses()
     };
-  });
-  
-  // 🚀 Exponer computed agrupado
-  styles = this.computedStyles;
+  }
   
   // 🚀 Computed para mostrar/ocultar elementos
   shouldShowHeader = computed(() => {
-    const variant = this.variant();
-    const hasFilename = !!this.filename();
-    const showHeader = this.showHeader();
+    const variant = this._variant();
+    const hasFilename = !!this._filename();
+    const showHeader = this._showHeader();
     
     return showHeader && (hasFilename || variant !== 'minimal');
   });
   
   shouldShowLineNumbers = computed(() => {
-    return this.showLineNumbers() && this.lineCount() > 1;
+    return this._showLineNumbers() && this.lineCount() > 1;
   });
   
-  isInlineVariant = computed(() => this.variant() === 'inline');
+  isInlineVariant = computed(() => {
+    return this._variant() === 'inline';
+  });
   
   constructor() {
     // 🚀 Effect optimizado para resetear estado de copiado
@@ -212,9 +231,9 @@ export class CodeBlockComponent {
   
   // 🚀 Métodos públicos
   async copyToClipboard(): Promise<void> {
-    if (!this.showCopyButton()) return;
+    if (!this._showCopyButton()) return;
     
-    const code = this.code();
+    const code = this.code;
     
     try {
       await navigator.clipboard.writeText(code);
@@ -244,30 +263,20 @@ export class CodeBlockComponent {
   }
   
   toggleCollapsed(): void {
-    if (this.collapsible()) {
+    if (this._collapsible()) {
       this.isCollapsed.update(value => !value);
     }
   }
   
   // 🚀 Métodos privados para cálculo de clases
-  getHostClasses(): string {
-    const classes = ['code-block', 'transition-all', 'duration-300'];
+  private getWrapperClasses(): string {
+    const isDark = this.isDarkMode();
+    const variant = this._variant();
+    const showBorder = this._showBorder();
     
-    if (this.display() === 'inline') {
-      classes.push('inline-code');
-    }
-    
-    if (this.variant() === 'inline') {
-      classes.push('variant-inline');
-    }
-    
-    return classes.join(' ');
-  }
-  
-  private getWrapperClasses(isDark: boolean, variant: CodeVariant): string {
     const classes = ['my-6', 'rounded-lg', 'overflow-hidden', 'shadow-lg'];
     
-    if (this.showBorder()) {
+    if (showBorder) {
       classes.push('border');
       classes.push(isDark ? 'border-gray-700' : 'border-gray-200');
     }
@@ -279,7 +288,10 @@ export class CodeBlockComponent {
     return classes.join(' ');
   }
   
-  private getHeaderClasses(isDark: boolean, variant: CodeVariant): string {
+  private getHeaderClasses(): string {
+    const isDark = this.isDarkMode();
+    const variant = this._variant();
+    
     if (variant === 'inline') return '';
     
     switch (variant) {
@@ -300,7 +312,10 @@ export class CodeBlockComponent {
     }
   }
   
-  private getCodeClasses(isDark: boolean, variant: CodeVariant): string {
+  private getCodeClasses(): string {
+    const isDark = this.isDarkMode();
+    const variant = this._variant();
+    
     if (variant === 'inline') {
       return isDark 
         ? 'bg-gray-800 text-gray-100' 
@@ -325,7 +340,10 @@ export class CodeBlockComponent {
     }
   }
   
-  private getLanguageBadgeClasses(isDark: boolean, language: string): string {
+  private getLanguageBadgeClasses(): string {
+    const isDark = this.isDarkMode();
+    const language = this._language();
+    
     const languageConfig = LANGUAGE_COLORS[language] || 
       (isDark 
         ? { dark: 'bg-gray-700 text-gray-300', light: 'bg-gray-200 text-gray-700' }
@@ -335,15 +353,20 @@ export class CodeBlockComponent {
     return isDark ? languageConfig.dark : languageConfig.light;
   }
   
-  private getCopyButtonClasses(isDark: boolean, isCopied: boolean): string {
-    if (isCopied) return 'bg-green-600 text-white shadow-sm';
+  private getCopyButtonClasses(): string {
+    const isDark = this.isDarkMode();
+    const copied = this.copied();
+    
+    if (copied) return 'bg-green-600 text-white shadow-sm';
     
     return isDark 
       ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white' 
       : 'bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900';
   }
   
-  private getExpandButtonClasses(isDark: boolean): string {
+  private getExpandButtonClasses(): string {
+    const isDark = this.isDarkMode();
+    
     return isDark 
       ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700' 
       : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300';
@@ -351,7 +374,7 @@ export class CodeBlockComponent {
   
   // 🚀 Helper para obtener líneas del código
   getLines(): string[] {
-    return this.code().split('\n');
+    return this.code.split('\n');
   }
   
   // 🚀 Helper para detectar si el código es largo
@@ -361,7 +384,7 @@ export class CodeBlockComponent {
   
   // 🚀 Auto-colapsar código largo si es colapsable
   autoCollapseIfLong(): void {
-    if (this.collapsible() && this.isCodeLong() && !this.isCollapsed()) {
+    if (this._collapsible() && this.isCodeLong() && !this.isCollapsed()) {
       this.isCollapsed.set(true);
     }
   }

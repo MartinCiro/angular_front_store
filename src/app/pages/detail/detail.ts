@@ -160,6 +160,13 @@ export class BlogDetailComponent implements OnInit {
   private filterRelatedCodeExamples(category: string): void {
     const language = this.getLanguageFromCategory(category);
     const relatedExamples = this.mockDataService.getCodeByLanguage(language);
+
+    console.log('Filtering code examples:', {
+      category,
+      language,
+      relatedExamples: relatedExamples.length
+    });
+
     this.filteredCodeExamples.set(relatedExamples);
   }
 
@@ -197,15 +204,17 @@ export class BlogDetailComponent implements OnInit {
    */
   private getLanguageFromCategory(category: string): string {
     const categoryLanguageMap: Record<string, string> = {
-      'Algoritmos': 'python',
-      'Angular': 'typescript',
-      'JavaScript': 'javascript',
-      'Python': 'python',
-      'TypeScript': 'typescript',
-      'React': 'javascript'
+      'algoritmos': 'python',
+      'angular': 'typescript',
+      'javascript': 'javascript',
+      'python': 'python',
+      'typescript': 'typescript',
+      'react': 'javascript',
+      'fundamentos': 'typescript',
+      'teoría': 'python'
     };
 
-    return categoryLanguageMap[category] || 'typescript';
+    return categoryLanguageMap[category.toLowerCase()] || 'typescript';
   }
 
   // 🚀 MÉTODOS PÚBLICOS
@@ -237,6 +246,10 @@ export class BlogDetailComponent implements OnInit {
     const wordCount = content.split(/\s+/).length;
     const minutes = Math.ceil(wordCount / wordsPerMinute);
     return `${minutes} min`;
+  }
+
+  loadDefaultArticlePublic(): void {
+    this.loadDefaultArticle();
   }
 
   /**

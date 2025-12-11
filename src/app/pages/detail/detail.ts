@@ -75,6 +75,21 @@ export class BlogDetailComponent implements OnInit {
       : 'Mostrar sidebar'
   );
 
+  // 🚀 Signal computado para datos del sidebar
+  sidebarData = computed(() => {
+    const data = {
+      isOpen: this.sidebarOpen(),
+      relatedPosts: this.mockDataService.relatedPosts(),
+      popularTopics: this.mockDataService.popularTopics(),
+      showRelated: true,
+      showPopular: true,
+      showCategories: true,
+      categoriesTitle: 'Categorías Relacionadas'
+    };
+    
+    return data;
+  });
+
   constructor() {
     this.initializeTimeUpdater();
     this.initializeViewTracker();
@@ -161,12 +176,6 @@ export class BlogDetailComponent implements OnInit {
     const language = this.getLanguageFromCategory(category);
     const relatedExamples = this.mockDataService.getCodeByLanguage(language);
 
-    console.log('Filtering code examples:', {
-      category,
-      language,
-      relatedExamples: relatedExamples.length
-    });
-
     this.filteredCodeExamples.set(relatedExamples);
   }
 
@@ -189,7 +198,7 @@ export class BlogDetailComponent implements OnInit {
   /**
    * Carga un artículo por defecto como fallback
    */
-  private loadDefaultArticle(): void {
+  public loadDefaultArticle(): void {
     const defaultArticle = this.mockDataService.articles()[0];
     this.article.set(defaultArticle);
     
@@ -246,19 +255,5 @@ export class BlogDetailComponent implements OnInit {
     const wordCount = content.split(/\s+/).length;
     const minutes = Math.ceil(wordCount / wordsPerMinute);
     return `${minutes} min`;
-  }
-
-  loadDefaultArticlePublic(): void {
-    this.loadDefaultArticle();
-  }
-
-  /**
-   * Obtiene datos para el sidebar
-   */
-  getSidebarData() {
-    return {
-      relatedPosts: this.mockDataService.relatedPosts(),
-      popularTopics: this.mockDataService.popularTopics()
-    };
   }
 }

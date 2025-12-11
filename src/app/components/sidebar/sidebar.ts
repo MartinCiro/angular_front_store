@@ -13,7 +13,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ThemeService } from '@services/theme';
-import { LucideAngularModule, TrendingUp, Clock, Star } from 'lucide-angular';
+import { LucideAngularModule, TrendingUp, Clock, Star, ArrowUp } from 'lucide-angular';
 
 export type RelatedPost = {
   id: string;
@@ -35,41 +35,71 @@ export type RelatedPost = {
 export class SidebarComponent implements OnChanges {
   private themeService = inject(ThemeService);
 
-  // 🚀 INPUTS - Versión CORRECTA con Signals
-  // Para booleanos: crear Signal manualmente
-  
+  // 🚀 Signals internos
+  private _isOpen = signal(true);
+  private _relatedPosts = signal<RelatedPost[]>([]);
+  private _popularTopics = signal<string[]>([]);
+  private _categoriesTitle = signal('Categorías');
+  private _showRelated = signal(true);
+  private _showPopular = signal(true);
+  private _showCategories = signal(true);
+
+  // 🚀 Inputs tradicionales con setters
   @Input({ transform: booleanAttribute }) 
   set isOpen(value: boolean) {
-    this.isOpenSignal.set(value);
+    this._isOpen.set(value);
   }
-  isOpenSignal = signal(true);
+  get isOpen(): boolean {
+    return this._isOpen();
+  }
   
-  @Input({ transform: (v: RelatedPost[]) => v || [] }) 
-  relatedPosts = signal<RelatedPost[]>([]);
+  @Input() 
+  set relatedPosts(value: RelatedPost[] | null | undefined) {
+    this._relatedPosts.set(value || []);
+  }
+  get relatedPosts(): RelatedPost[] {
+    return this._relatedPosts();
+  }
   
-  @Input({ transform: (v: string[] | null | undefined) => v || [] }) 
-  popularTopics = signal<string[]>([]);
+  @Input() 
+  set popularTopics(value: string[] | null | undefined) {
+    this._popularTopics.set(value || []);
+  }
+  get popularTopics(): string[] {
+    return this._popularTopics();
+  }
   
-  @Input({ transform: (v: string) => v || 'Categorías' }) 
-  categoriesTitle = signal('Categorías');
+  @Input() 
+  set categoriesTitle(value: string) {
+    this._categoriesTitle.set(value || 'Categorías');
+  }
+  get categoriesTitle(): string {
+    return this._categoriesTitle();
+  }
   
   @Input({ transform: booleanAttribute }) 
   set showRelated(value: boolean) {
-    this.showRelatedSignal.set(value);
+    this._showRelated.set(value);
   }
-  showRelatedSignal = signal(true);
+  get showRelated(): boolean {
+    return this._showRelated();
+  }
   
   @Input({ transform: booleanAttribute }) 
   set showPopular(value: boolean) {
-    this.showPopularSignal.set(value);
+    this._showPopular.set(value);
   }
-  showPopularSignal = signal(true);
+  get showPopular(): boolean {
+    return this._showPopular();
+  }
   
   @Input({ transform: booleanAttribute }) 
   set showCategories(value: boolean) {
-    this.showCategoriesSignal.set(value);
+    this._showCategories.set(value);
   }
-  showCategoriesSignal = signal(true);
+  get showCategories(): boolean {
+    return this._showCategories();
+  }
 
   // 🚀 Signals computados
   private _isDarkMode = computed(() => this.themeService.isDarkMode());
@@ -106,25 +136,26 @@ export class SidebarComponent implements OnChanges {
   readonly TrendingUp = TrendingUp;
   readonly Clock = Clock;
   readonly Star = Star;
+  readonly ArrowUp = ArrowUp;
 
   // 🚀 Signals computados para datos procesados
   limitedRelatedPosts = computed(() => {
-    const posts = this.relatedPosts();
+    const posts = this._relatedPosts();
     return posts.length > 3 ? posts.slice(0, 3) : posts;
   });
 
   limitedPopularTopics = computed(() => {
-    const topics = this.popularTopics();
+    const topics = this._popularTopics();
     return topics.length > 5 ? topics.slice(0, 5) : topics;
   });
 
-  // 🚀 CORREGIDO: Usar los Signals
+  // 🚀 Computed para mostrar/ocultar
   shouldShowRelated = computed(() =>
-    this.showRelatedSignal() && this.relatedPosts().length > 0
+    this._showRelated() && this._relatedPosts().length > 0
   );
 
   shouldShowPopular = computed(() =>
-    this.showPopularSignal() && this.popularTopics().length > 0
+    this._showPopular() && this._popularTopics().length > 0
   );
 
   // Signals para newsletter

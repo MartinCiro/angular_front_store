@@ -28,10 +28,10 @@
               "src/styles.css"
             ],
             "server": "src/main.server.ts",
-            "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "prerender": false  
           },
           "configurations": {
             "production": {
@@ -47,7 +47,9 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false
             },
             "development": {
               "optimization": false,
@@ -64,7 +66,8 @@
               "buildTarget": "blog:build:production"
             },
             "development": {
-              "buildTarget": "blog:build:development"
+              "buildTarget": "blog:build:development",
+              "ssr": true
             }
           },
           "defaultConfiguration": "development"

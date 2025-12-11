@@ -5,7 +5,6 @@ import {
   signal,
   OnInit,
   ChangeDetectionStrategy,
-  runInInjectionContext,
   DestroyRef,
   effect
 } from '@angular/core';
@@ -33,24 +32,25 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlogDetailComponent implements OnInit {
-  // 🚀 Inyección de servicios
+  // 🚀 SERVICIOS INYECTADOS
   private themeService = inject(ThemeService);
   private mockDataService = inject(MockDataService);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
 
-  // 🚀 SIGNALS PARA ESTADO
+  // 🚀 SIGNALS PARA ESTADO DE LA UI
   isDarkMode = computed(() => this.themeService.isDarkMode());
   sidebarOpen = signal(true);
   isLoading = signal(true);
   error = signal<string | null>(null);
 
-  // 🚀 SIGNALS PARA DATOS DINÁMICOS
+  // 🚀 SIGNALS PARA DATOS DEL ARTÍCULO
   article = signal<ArticleData | null>(null);
   filteredCodeExamples = signal<CodeExample[]>([]);
   articleId = signal<string>('');
+  currentTime = signal(new Date());
 
-  // 🚀 COMPUTED SIGNALS
+  // 🚀 SIGNALS COMPUTADAS PARA LA UI
   mainContentClasses = computed(() =>
     this.sidebarOpen()
       ? 'lg:max-w-4xl'
@@ -75,31 +75,42 @@ export class BlogDetailComponent implements OnInit {
       : 'Mostrar sidebar'
   );
 
-  // 🚀 Stats dinámicos (podrían venir de analytics real)
-  currentTime = signal(new Date());
-
   constructor() {
-    // 🚀 Actualizar hora cada minuto (simulación de datos en tiempo real)
+    this.initializeTimeUpdater();
+    this.initializeViewTracker();
+  }
+
+  ngOnInit(): void {
+    this.initializeArticleSubscription();
+  }
+
+  /**
+   * Inicializa el actualizador del tiempo cada minuto
+   */
+  private initializeTimeUpdater(): void {
     const intervalId = setInterval(() => {
       this.currentTime.set(new Date());
     }, 60000);
 
     this.destroyRef.onDestroy(() => clearInterval(intervalId));
+  }
 
-    // 🚀 Effect para incrementar vistas cuando el artículo se carga
+  /**
+   * Inicializa el tracker de vistas para artículos
+   */
+  private initializeViewTracker(): void {
     effect(() => {
       const article = this.article();
       if (article) {
-        // Simular incremento de vistas (en producción sería una llamada a API)
-        setTimeout(() => {
-          this.mockDataService.incrementViews(article.id);
-        }, 2000);
+        this.trackArticleView(article.id);
       }
     });
   }
 
-  ngOnInit(): void {
-    // 🚀 Obtener ID del artículo de la ruta
+  /**
+   * Inicializa la suscripción a cambios en los parámetros de ruta
+   */
+  private initializeArticleSubscription(): void {
     this.route.paramMap
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(params => {
@@ -107,63 +118,83 @@ export class BlogDetailComponent implements OnInit {
         this.articleId.set(id);
         this.loadArticle(id);
       });
-
-    // 🚀 Effect para incrementar vistas cuando el artículo se carga
-    runInInjectionContext(this, () => {
-      effect(() => {
-        const article = this.article();
-        if (article) {
-          // Simular incremento de vistas (en producción sería una llamada a API)
-          setTimeout(() => {
-            this.mockDataService.incrementViews(article.id);
-          }, 2000);
-        }
-      });
-    });
   }
 
+  /**
+   * Simula el tracking de vistas para un artículo
+   */
+  private trackArticleView(articleId: string): void {
+    setTimeout(() => {
+      this.mockDataService.incrementViews(articleId);
+    }, 2000);
+  }
+
+  /**
+   * Carga un artículo por su ID
+   */
   private loadArticle(id: string): void {
     this.isLoading.set(true);
     this.error.set(null);
 
-    // 🚀 Simular carga asíncrona (en producción sería HTTP request)
     setTimeout(() => {
       try {
         const article = this.mockDataService.getArticleById(id);
 
         if (article) {
-          console.log(article)
           this.article.set(article);
-
-          // 🚀 Filtrar ejemplos de código por categoría del artículo
-          const relatedExamples = this.mockDataService
-            .getCodeByLanguage(this.getLanguageFromCategory(article.category));
-
-          this.filteredCodeExamples.set(relatedExamples);
+          this.filterRelatedCodeExamples(article.category);
         } else {
-          this.error.set(`Artículo con ID "${id}" no encontrado`);
-          // 🚀 Cargar artículo por defecto
-          this.loadDefaultArticle();
+          this.handleArticleNotFound(id);
         }
       } catch (err) {
-        this.error.set('Error al cargar el artículo');
-        this.loadDefaultArticle();
+        this.handleLoadError();
       } finally {
         this.isLoading.set(false);
       }
-    }, 800); // Simular delay de red
+    }, 800);
   }
 
+  /**
+   * Filtra ejemplos de código relacionados con la categoría del artículo
+   */
+  private filterRelatedCodeExamples(category: string): void {
+    const language = this.getLanguageFromCategory(category);
+    const relatedExamples = this.mockDataService.getCodeByLanguage(language);
+    this.filteredCodeExamples.set(relatedExamples);
+  }
+
+  /**
+   * Maneja el caso cuando no se encuentra un artículo
+   */
+  private handleArticleNotFound(id: string): void {
+    this.error.set(`Artículo con ID "${id}" no encontrado`);
+    this.loadDefaultArticle();
+  }
+
+  /**
+   * Maneja errores de carga
+   */
+  private handleLoadError(): void {
+    this.error.set('Error al cargar el artículo');
+    this.loadDefaultArticle();
+  }
+
+  /**
+   * Carga un artículo por defecto como fallback
+   */
   private loadDefaultArticle(): void {
     const defaultArticle = this.mockDataService.articles()[0];
     this.article.set(defaultArticle);
-
+    
     const defaultExamples = this.mockDataService
       .getCodeByLanguage(this.getLanguageFromCategory(defaultArticle.category));
-
+    
     this.filteredCodeExamples.set(defaultExamples);
   }
 
+  /**
+   * Obtiene el lenguaje de programación asociado a una categoría
+   */
   private getLanguageFromCategory(category: string): string {
     const categoryLanguageMap: Record<string, string> = {
       'Algoritmos': 'python',
@@ -178,11 +209,17 @@ export class BlogDetailComponent implements OnInit {
   }
 
   // 🚀 MÉTODOS PÚBLICOS
+
+  /**
+   * Alterna la visibilidad del sidebar
+   */
   toggleSidebar(): void {
     this.sidebarOpen.update(value => !value);
   }
 
-  // 🚀 Método para formatear fecha
+  /**
+   * Formatea una fecha en español
+   */
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
@@ -192,7 +229,9 @@ export class BlogDetailComponent implements OnInit {
     });
   }
 
-  // 🚀 Método para tiempo de lectura estimado
+  /**
+   * Calcula el tiempo estimado de lectura
+   */
   estimateReadTime(content: string): string {
     const wordsPerMinute = 200;
     const wordCount = content.split(/\s+/).length;
@@ -200,7 +239,9 @@ export class BlogDetailComponent implements OnInit {
     return `${minutes} min`;
   }
 
-  // 🚀 Método para obtener datos del sidebar
+  /**
+   * Obtiene datos para el sidebar
+   */
   getSidebarData() {
     return {
       relatedPosts: this.mockDataService.relatedPosts(),

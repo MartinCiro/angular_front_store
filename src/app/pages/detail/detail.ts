@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ThemeService } from '@services/theme';
-import { MockDataService, ArticleData, CodeExample } from '@services/mock-data.service';
+import { MockDataService, BlogPost } from '@services/mock-data.service';
 import { SidebarComponent } from '@components/sidebar/sidebar';
 import { CodeBlockComponent } from '@components/code-block/code-block';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -45,8 +45,7 @@ export class BlogDetailComponent implements OnInit {
   error = signal<string | null>(null);
 
   // 🚀 SIGNALS PARA DATOS DEL ARTÍCULO
-  article = signal<ArticleData | null>(null);
-  filteredCodeExamples = signal<CodeExample[]>([]);
+  article = signal<BlogPost | null>(null);
   articleId = signal<string>('');
   currentTime = signal(new Date());
 
@@ -76,19 +75,15 @@ export class BlogDetailComponent implements OnInit {
   );
 
   // 🚀 Signal computado para datos del sidebar
-  sidebarData = computed(() => {
-    const data = {
-      isOpen: this.sidebarOpen(),
-      relatedPosts: this.mockDataService.relatedPosts(),
-      popularTopics: this.mockDataService.popularTopics(),
-      showRelated: true,
-      showPopular: true,
-      showCategories: true,
-      categoriesTitle: 'Categorías Relacionadas'
-    };
-    
-    return data;
-  });
+  sidebarData = computed(() => ({
+    isOpen: this.sidebarOpen(),
+    relatedPosts: this.mockDataService.relatedPosts(),
+    popularTopics: this.mockDataService.popularTopics(),
+    showRelated: true,
+    showPopular: true,
+    showCategories: true,
+    categoriesTitle: 'Categorías Relacionadas'
+  }));
 
   constructor() {
     this.initializeTimeUpdater();
@@ -138,7 +133,7 @@ export class BlogDetailComponent implements OnInit {
   /**
    * Simula el tracking de vistas para un artículo
    */
-  private trackArticleView(articleId: string): void {
+  private trackArticleView(articleId: string | number): void {
     setTimeout(() => {
       this.mockDataService.incrementViews(articleId);
     }, 2000);
@@ -147,17 +142,16 @@ export class BlogDetailComponent implements OnInit {
   /**
    * Carga un artículo por su ID
    */
-  private loadArticle(id: string): void {
+  private loadArticle(id: string | number): void {
     this.isLoading.set(true);
     this.error.set(null);
 
     setTimeout(() => {
       try {
-        const article = this.mockDataService.getArticleById(id);
+        const post = this.mockDataService.getPostById(id);
 
-        if (article) {
-          this.article.set(article);
-          this.filterRelatedCodeExamples(article.category);
+        if (post) {
+          this.article.set(post);
         } else {
           this.handleArticleNotFound(id);
         }
@@ -170,20 +164,10 @@ export class BlogDetailComponent implements OnInit {
   }
 
   /**
-   * Filtra ejemplos de código relacionados con la categoría del artículo
-   */
-  private filterRelatedCodeExamples(category: string): void {
-    const language = this.getLanguageFromCategory(category);
-    const relatedExamples = this.mockDataService.getCodeByLanguage(language);
-
-    this.filteredCodeExamples.set(relatedExamples);
-  }
-
-  /**
    * Maneja el caso cuando no se encuentra un artículo
    */
-  private handleArticleNotFound(id: string): void {
-    this.error.set(`Artículo con ID "${id}" no encontrado`);
+  private handleArticleNotFound(id: string | number): void {
+    this.error.set(`Content with ID "${id}" not found`);
     this.loadDefaultArticle();
   }
 
@@ -191,7 +175,7 @@ export class BlogDetailComponent implements OnInit {
    * Maneja errores de carga
    */
   private handleLoadError(): void {
-    this.error.set('Error al cargar el artículo');
+    this.error.set('Error loading content');
     this.loadDefaultArticle();
   }
 
@@ -199,31 +183,14 @@ export class BlogDetailComponent implements OnInit {
    * Carga un artículo por defecto como fallback
    */
   public loadDefaultArticle(): void {
-    const defaultArticle = this.mockDataService.articles()[0];
-    this.article.set(defaultArticle);
-    
-    const defaultExamples = this.mockDataService
-      .getCodeByLanguage(this.getLanguageFromCategory(defaultArticle.category));
-    
-    this.filteredCodeExamples.set(defaultExamples);
-  }
+    const allPosts = this.mockDataService.allPosts();
 
-  /**
-   * Obtiene el lenguaje de programación asociado a una categoría
-   */
-  private getLanguageFromCategory(category: string): string {
-    const categoryLanguageMap: Record<string, string> = {
-      'algoritmos': 'python',
-      'angular': 'typescript',
-      'javascript': 'javascript',
-      'python': 'python',
-      'typescript': 'typescript',
-      'react': 'javascript',
-      'fundamentos': 'typescript',
-      'teoría': 'python'
-    };
-
-    return categoryLanguageMap[category.toLowerCase()] || 'typescript';
+    if (allPosts.length > 0) {
+      const defaultPost = allPosts[0];
+      this.article.set(defaultPost);
+    } else {
+      this.error.set('No hay posts disponibles');
+    }
   }
 
   // 🚀 MÉTODOS PÚBLICOS
@@ -239,12 +206,16 @@ export class BlogDetailComponent implements OnInit {
    * Formatea una fecha en español
    */
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch {
+      return dateString;
+    }
   }
 
   /**

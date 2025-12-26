@@ -1,17 +1,21 @@
 import { Injectable, signal } from '@angular/core';
 
-export interface ArticleData {
-  id: string;
+// 🚀 SOLO UNA interfaz para todos los posts
+export interface BlogPost {
+  id: string | number;
   title: string;
+  description: string;
+  excerpt?: string;
+  imageUrl: string;
+  category: string;
   author: string;
   authorAvatar: string;
   publishDate: string;
-  category: string;
   readTime: string;
   views: number;
-  excerpt: string;
   tags: string[];
-  content: string;
+  content?: string;
+  codeExamples?: CodeExample[];  // Ejemplos específicos para este post
 }
 
 export interface CodeExample {
@@ -36,105 +40,143 @@ export interface RelatedPost {
   providedIn: 'root'
 })
 export class MockDataService {
-  // 🚀 Signals con mock data dinámico
-  private _articles = signal<ArticleData[]>([
-    {
-      id: '1',
-      title: 'Algoritmos de Clasificación: Una Comparativa',
-      author: 'Jane Doe',
-      authorAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC0XTDwdpTb3OfmOI6kMkyIubO-RL_ytzJMO05QgfUOQpF3eMOohSdklY_kZZ_NgFpsg0q8yjOU5f0sOrDTimy5tk-DLSX3_52l03e2dBi48QqA2G8KKI-gYhdJy5oWrj0ZbQ_5YNJr8URSGuOnc06lJl32SbPvLugi4Ib8mj2LAG9JHDEgcG4bTr_S8DoBTBJe1HedME-w5SyCNm0PZqgqZl-xRHbnT76U6HsYYMdOFpEKamSFforc7Rl2vwXC35CgnYu2dH-lqfw',
-      publishDate: '21 de Mayo, 2024',
-      category: 'Algoritmos',
-      readTime: '8 min lectura',
-      views: 1247,
-      excerpt: 'Un análisis comparativo de los algoritmos de ordenamiento más populares',
-      tags: ['Algoritmos', 'Python', 'Performance', 'Estructuras de Datos'],
-      content: `
-        <h2>Fundamentos Teóricos</h2>
-        <p>Los algoritmos de clasificación son un componente fundamental en la informática...</p>
-        
-        <h2>Complejidad Computacional</h2>
-        <p>La eficiencia se mide comúnmente por su complejidad temporal y espacial...</p>
-      `
-    },
-    {
-      id: '2',
-      title: 'Introducción a Angular Signals',
-      author: 'Carlos Ruiz',
-      authorAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Angular',
-      publishDate: '22 de Mayo, 2024',
-      category: 'Angular',
-      readTime: '10 min lectura',
-      views: 892,
-      excerpt: 'Guía completa para entender y usar Signals en Angular',
-      tags: ['Angular', 'Signals', 'TypeScript', 'Frontend'],
-      content: `
-        <h2>¿Qué son los Signals?</h2>
-        <p>Los Signals son la nueva API reactiva en Angular que simplifica...</p>
-        
-        <h2>Ventajas sobre RxJS</h2>
-        <p>Para estados simples, Signals ofrece una sintaxis más limpia...</p>
-      `
-    }
-  ]);
+  // 🚀 UN SOLO signal para todos los posts CON EJEMPLOS INCORPORADOS
+  // En MockDataService, actualiza _allPosts para tener 7 posts:
 
-  private _codeExamples = signal<CodeExample[]>([
+  private _allPosts = signal<BlogPost[]>([
     {
       id: '1',
-      title: 'Bubble Sort',
-      language: 'python',
-      filename: 'bubble_sort.py',
-      code: `def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr`,
-      description: 'Implementación clásica con optimización de bandera'
+      title: "DIY & Crafts",
+      description: "Unleash your creativity with our fun and easy DIY squishy projects!",
+      excerpt: "Unleash your creativity with our fun and easy DIY squishy projects!",
+      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCKwObVXS73q1Qioa15V2Rjy996BkQd14yy6MHL11-7g3soL58C0WmjKwIjeuFA_bv112G9GrmhhAljEfxgWT7kaRos19mL2hVpfd2243sg1daS09Wpzf8Gha2Ff8l49d--lCcE2tzX_jdbtQHnpKX_S22WBYYlC_JuEe29RqXnebAgyHlztVjq0YUfcgfmHrgQFbCr_byyxMz60pkvraAcNmZs-hy3dn_ZV1T2AC9B8QhVAqNYRS8FdLB52K3arnE4kxPWhgajgOE",
+      category: "DIY",
+      author: "Artista Creativo",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DIY",
+      publishDate: "21 de Mayo, 2024",
+      readTime: "5 min lectura",
+      views: 320,
+      tags: ['DIY', 'Crafts', 'Creativity'],
+      content: `
+      <h1>DIY & Crafts - Guía Completa</h1>
+      <p>Bienvenido a nuestro rincón de manualidades y proyectos DIY...</p>
+    `,
+      codeExamples: [
+        {
+          id: 'diy-1',
+          title: 'HTML Template para Proyectos DIY',
+          language: 'html',
+          filename: 'diy_project.html',
+          code: `<!DOCTYPE html><html>...</html>`,
+          description: 'Template HTML para documentar proyectos DIY'
+        }
+      ]
     },
     {
       id: '2',
-      title: 'Quick Sort',
-      language: 'python',
-      filename: 'quick_sort.py',
-      code: `def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    else:
-        pivot = arr[len(arr) // 2]
-        left = [x for x in arr if x < pivot]
-        middle = [x for x in arr if x == pivot]
-        right = [x for x in arr if x > pivot]
-        return quick_sort(left) + middle + quick_sort(right)`,
-      description: 'Implementación recursiva con pivot central'
+      title: "Collector's Corner",
+      description: "Dive into the world of rare finds and limited edition squishies.",
+      excerpt: "Dive into the world of rare finds and limited edition squishies.",
+      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBs6A0ydCkwWj1WQ8QnavTtjnJ0hN08pHEOABDiYlwfC5rFMC4VCu1G-yBNN-GGLKXv51lvv35kqaxeXrcs0sEYYAWlzaXu_aTNRiZTufV6j-LE_8dFGTT2in-BTAXMhk8_fs4gHX4t74cfPxtf_hUzumua2KCcTDSsfGaJXUKSx1D8nxE14LacGSWnpRQPk1lYjIB07ZknHN8TGkoWNxZFUFb9q1GWmxdslVGsKAx58WLNWfroey-BU5EoesJyYCEAH8nbcWFRBJU",
+      category: "Collecting",
+      author: "Coleccionista Expert",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Collector",
+      publishDate: "19 de Mayo, 2024",
+      readTime: "7 min lectura",
+      views: 450,
+      tags: ['Collecting', 'Rare', 'Limited Edition'],
+      content: `<h1>Collector's Corner - Guía del Coleccionista</h1>`,
+      codeExamples: [
+        {
+          id: 'collect-1',
+          title: 'CSS para Galería de Coleccionables',
+          language: 'css',
+          filename: 'collection_gallery.css',
+          code: `.collection-gallery { display: grid; }`,
+          description: 'CSS para mostrar coleccionables'
+        }
+      ]
     },
     {
       id: '3',
-      title: 'Angular Signal Basic',
-      language: 'typescript',
-      filename: 'counter.service.ts',
-      code: `import { signal, computed, effect } from '@angular/core';
-
-export class CounterService {
-  count = signal(0);
-  doubleCount = computed(() => this.count() * 2);
-  
-  constructor() {
-    effect(() => {
-      console.log('Count changed:', this.count());
-    });
-  }
-  
-  increment() {
-    this.count.update(value => value + 1);
-  }
-}`,
-      description: 'Ejemplo básico de signal en Angular'
+      title: "Community Events",
+      description: "Join our meetups, trade events, and connect with fellow enthusiasts.",
+      excerpt: "Join our meetups, trade events, and connect with fellow enthusiasts.",
+      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_XoXhlLQxWhseYp4EIk0vjIuY-onPwkF9aPBMvjlEt9wQZuqICIg9ytIFsv14KZtsTxYvSz2dxdcq3WCe0KmIpEjh7qB6z19KbmSpxQg0n0HR8ombbK1ZcDMpz7QkbR-oleKVzbkhXzQOmRMR0g91IfIeWxE3RHPVWdUz-qYl90uRPfK_lbO3c__-uBa5SSPGJxOctCEJ9vR-FdMfRbXVpcrMF2JieOfQqkx-aYO_3bOp56auEJHe7HCYL4Dm0r23xz2xf0CSP-M",
+      category: "Events",
+      author: "Organizador Comunitario",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Community",
+      publishDate: "18 de Mayo, 2024",
+      readTime: "4 min lectura",
+      views: 280,
+      tags: ['Events', 'Community', 'Meetups'],
+      content: `<h1>Community Events - Conecta con la Comunidad</h1>`,
+      codeExamples: []
+    },
+    {
+      id: '4',
+      title: "Behind the Scenes",
+      description: "See how your favorite squishies are designed and brought to life.",
+      excerpt: "See how your favorite squishies are designed and brought to life.",
+      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDbw13wqJVD9ZjxpQ1FNFHWnt8SWn2B7zUeprCwR6W844AMrtn5k7Upzgo97e8U6bu15gqoh_9SGyx36dWxTsv2yRB88zDkjPvW_Ya7i2SrHmtq32nxODJjazwCfqjN91XWuYDvkxJXNycpsl_T3PiVy_iyIDE1vrTTZscslIZTSKX9tlfn7jrHnHbQwzFilLtWWpOk-irtB8O49czyi6a2PO5h9ufNAqlMOXI0CLv1nIiO4ZPrjnUzgKoK9kuHNiz_zBCc4wcLuKc",
+      category: "Production",
+      author: "Diseñador Industrial",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Designer",
+      publishDate: "17 de Mayo, 2024",
+      readTime: "6 min lectura",
+      views: 390,
+      tags: ['Production', 'Design', 'Manufacturing'],
+      content: `<h1>Behind the Scenes - El Proceso Creativo</h1>`,
+      codeExamples: []
+    },
+    // AGREGAR 3 POSTS ADICIONALES PARA LLEGAR A 7
+    {
+      id: '5',
+      title: "Squishy Care & Maintenance",
+      description: "Learn how to properly care for and maintain your squishy collection.",
+      excerpt: "Learn how to properly care for and maintain your squishy collection.",
+      imageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Care",
+      category: "Maintenance",
+      author: "Expert Caretaker",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Caretaker",
+      publishDate: "16 de Mayo, 2024",
+      readTime: "8 min lectura",
+      views: 210,
+      tags: ['Care', 'Maintenance', 'Cleaning', 'Preservation'],
+      content: `<h1>Squishy Care & Maintenance Guide</h1>`,
+      codeExamples: []
+    },
+    {
+      id: '6',
+      title: "Custom Squishy Designs",
+      description: "Create your own custom squishy designs with our step-by-step tutorial.",
+      excerpt: "Create your own custom squishy designs with our step-by-step tutorial.",
+      imageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Design",
+      category: "Customization",
+      author: "Design Pro",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DesignPro",
+      publishDate: "15 de Mayo, 2024",
+      readTime: "10 min lectura",
+      views: 175,
+      tags: ['Custom', 'Design', 'Tutorial', 'Personalization'],
+      content: `<h1>Custom Squishy Designs Tutorial</h1>`,
+      codeExamples: []
+    },
+    {
+      id: '7',
+      title: "Squishy Trading Tips",
+      description: "Master the art of squishy trading with our expert tips and strategies.",
+      excerpt: "Master the art of squishy trading with our expert tips and strategies.",
+      imageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Trading",
+      category: "Trading",
+      author: "Trading Expert",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=TradingExpert",
+      publishDate: "14 de Mayo, 2024",
+      readTime: "6 min lectura",
+      views: 290,
+      tags: ['Trading', 'Tips', 'Strategies', 'Community'],
+      content: `<h1>Squishy Trading Tips & Strategies</h1>`,
+      codeExamples: []
     }
   ]);
 
@@ -162,6 +204,14 @@ export class CounterService {
       slug: 'merge-sort-vs-heap-sort',
       category: 'Algoritmos',
       readTime: '7 min'
+    },
+    {
+      id: '4',
+      title: 'Angular vs React: Comparativa 2024',
+      date: '10 de Mayo, 2024',
+      slug: 'angular-vs-react-2024',
+      category: 'Frameworks',
+      readTime: '8 min'
     }
   ]);
 
@@ -172,46 +222,56 @@ export class CounterService {
     'GraphQL vs REST: Cuándo Usar Cada Uno',
     'Testing en Angular con Jest',
     'Microservicios con Node.js',
-    'Machine Learning Básico'
+    'Machine Learning Básico',
+    'Clean Code Principles',
+    'Serverless Architecture'
   ]);
 
   // 🚀 Exponer signals como readonly
-  articles = this._articles.asReadonly();
-  codeExamples = this._codeExamples.asReadonly();
+  allPosts = this._allPosts.asReadonly();
+  // codeExamples = this._codeExamples.asReadonly(); // ELIMINA esta línea
   relatedPosts = this._relatedPosts.asReadonly();
   popularTopics = this._popularTopics.asReadonly();
 
-  // 🚀 Métodos para simular cambios dinámicos
-  incrementViews(articleId: string): void {
-    this._articles.update(articles => 
-      articles.map(article => 
-        article.id === articleId 
-          ? { ...article, views: article.views + 1 }
-          : article
+  // 🚀 MÉTODOS PRINCIPALES
+
+  // GET /posts/:id (para detalle)
+  getPostById(id: string | number): BlogPost | undefined {
+    const post = this._allPosts().find(p => p.id.toString() === id.toString());
+    return post ? { ...post } : undefined;
+  }
+
+  // GET /posts (para home)
+  getPosts(): BlogPost[] {
+    return this._allPosts().map(post => ({
+      ...post,
+      content: undefined,
+      codeExamples: undefined  // No enviamos ejemplos en la lista
+    }));
+  }
+
+  // PUT /posts/:id/views (para incrementar vistas)
+  incrementViews(postId: string | number): void {
+    this._allPosts.update(posts =>
+      posts.map(post =>
+        post.id.toString() === postId.toString()
+          ? { ...post, views: post.views + 1 }
+          : post
       )
     );
   }
 
-  addCodeExample(example: CodeExample): void {
-    this._codeExamples.update(examples => [...examples, example]);
+  // 🚀 Métodos auxiliares
+  getTotalPosts(): number {
+    return this._allPosts().length;
   }
 
-  // 🚀 Método para obtener artículo por ID (simula API)
-  getArticleById(id: string): ArticleData | undefined {
-    return this._articles().find(article => article.id === id);
+  getTotalViews(): number {
+    return this._allPosts().reduce((sum, post) => sum + post.views, 0);
   }
 
-  // 🚀 Método para obtener artículos por categoría
-  getArticlesByCategory(category: string): ArticleData[] {
-    return this._articles().filter(article => 
-      article.category.toLowerCase() === category.toLowerCase()
-    );
-  }
-
-  // 🚀 Método para obtener código por lenguaje
-  getCodeByLanguage(language: string): CodeExample[] {
-    return this._codeExamples().filter(example => 
-      example.language.toLowerCase() === language.toLowerCase()
-    );
+  getCategories(): string[] {
+    const categories = new Set(this._allPosts().map(post => post.category));
+    return Array.from(categories);
   }
 }

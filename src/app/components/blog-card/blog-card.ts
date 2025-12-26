@@ -1,6 +1,8 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ThemeService } from '@services/theme';
+import { BlogPost } from '@services/mock-data.service';
 
 @Component({
   selector: 'app-blog-card',
@@ -10,17 +12,22 @@ import { ThemeService } from '@services/theme';
   styleUrl: './blog-card.css'
 })
 export class BlogCardComponent {
-  @Input() post: any;
+  @Input() post!: BlogPost;
   private themeService = inject(ThemeService);
+  private router = inject(Router);
   
-  // Hacer que el componente reaccione al tema
   isDarkMode = this.themeService.isDarkMode;
+  
+  // Método para navegar al detalle
+  navigateToDetail(): void {
+    this.router.navigate(['/', this.post.id.toString()]);
+  }
   
   // Clases dinámicas basadas en el tema
   getCardClasses() {
     return this.isDarkMode() 
-      ? 'bg-gray-800 border-gray-700 text-gray-200' 
-      : 'bg-white border-gray-300 text-gray-800';
+      ? 'bg-gray-800 border-gray-700 text-gray-200 hover:bg-gray-750' 
+      : 'bg-white border-gray-300 text-gray-800 hover:bg-gray-50';
   }
   
   getTitleClasses() {
@@ -29,5 +36,17 @@ export class BlogCardComponent {
   
   getTextClasses() {
     return this.isDarkMode() ? 'text-gray-300' : 'text-gray-600';
+  }
+  
+  getCategoryClasses() {
+    return this.isDarkMode()
+      ? 'bg-green-600 text-white'
+      : 'bg-green-100 text-green-800';
+  }
+  
+  getBorderClasses() {
+    return this.isDarkMode()
+      ? 'border-gray-700'
+      : 'border-gray-200';
   }
 }

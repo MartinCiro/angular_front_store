@@ -62,14 +62,68 @@ export class MockDataService {
       <p>Bienvenido a nuestro rincón de manualidades y proyectos DIY...</p>
     `,
       codeExamples: [
-        {
-          id: 'diy-1',
-          title: 'HTML Template para Proyectos DIY',
-          language: 'html',
-          filename: 'diy_project.html',
-          code: `<!DOCTYPE html><html>...</html>`,
-          description: 'Template HTML para documentar proyectos DIY'
-        }
+      {
+        id: 'diy-1',
+        title: 'HTML Template para Proyectos DIY',
+        language: 'html',
+        filename: 'diy_project.html',
+        code: `<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto DIY - Squishy Personalizado</title>
+    <style>
+        .diy-container { max-width: 800px; margin: 0 auto; }
+        .materials-list { background: #f9f9f9; padding: 15px; }
+    </style>
+</head>
+<body>
+    <div class="diy-container">
+        <h1>🎨 Proyecto DIY</h1>
+        <div class="materials-list">
+            <h3>📦 Materiales:</h3>
+            <ul>
+                <li>Espuma memory foam</li>
+                <li>Tela de felpa</li>
+                <li>Hilo y aguja</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>`,
+        description: 'Template HTML para documentar proyectos DIY'
+      },
+      {
+        id: 'diy-2',
+        title: 'Lista de Materiales en JSON',
+        language: 'json',
+        filename: 'materials.json',
+        code: `{
+  "project": "Squishy Personalizado",
+  "difficulty": "Principiante",
+  "estimatedTime": "2 horas",
+  "materials": [
+    {
+      "name": "Espuma memory foam",
+      "quantity": "1 bloque",
+      "purpose": "Cuerpo principal"
+    },
+    {
+      "name": "Tela de felpa",
+      "quantity": "0.5m²",
+      "purpose": "Cubierta exterior"
+    },
+    {
+      "name": "Hilo de poliéster",
+      "quantity": "1 carrete",
+      "purpose": "Costura"
+    }
+  ],
+  "tools": ["Tijeras", "Agujas", "Marcadores textiles"],
+  "costEstimate": "$15-20"
+}`,
+        description: 'Estructura JSON para lista de materiales'
+      }
       ]
     },
     {

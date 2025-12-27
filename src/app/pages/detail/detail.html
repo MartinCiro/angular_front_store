@@ -62,12 +62,12 @@
           <div [innerHTML]="article()?.content"></div>
         </div>
 
-        <!-- Ejemplos de código relacionados - DINÁMICO -->
-        @if (filteredCodeExamples() && filteredCodeExamples().length > 0) {
+        <!-- Ejemplos de código SOLO si el post los tiene -->
+        @if (article()?.codeExamples && article()!.codeExamples!.length > 0) {
         <div class="mb-12">
-          <h2 class="text-3xl font-bold text-primary mb-6">Ejemplos de Código Relacionados</h2>
+          <h2 class="text-3xl font-bold text-primary mb-6">Ejemplos de Código</h2>
 
-          @for (example of filteredCodeExamples(); track example.id) {
+          @for (example of article()!.codeExamples!; track example.id) {
           <div class="mb-8">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3">
               {{ example.title }}
@@ -84,19 +84,14 @@
               [code]="example.code"
               [language]="example.language"
               [filename]="example.filename ?? ''"
+              [title]="example.title"
               [description]="example.description ?? ''">
             </app-code-block>
           </div>
           }
         </div>
-        } @else {
-        <div class="mb-12">
-          <h2 class="text-3xl font-bold text-primary mb-6">Ejemplos de Código</h2>
-          <p class="text-gray-500 dark:text-gray-400">
-            No hay ejemplos de código disponibles para esta categoría.
-          </p>
-        </div>
         }
+        <!-- Si no hay codeExamples, NO SE MUESTRA NADA -->
         
       </article>
       } @else {

@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, computed } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from "./header/header";
-import { FooterComponent } from "./footer/footer";
+import { HeaderComponent } from "./layout/header/header";
+import { FooterComponent } from "./layout/footer/footer";
 import { MatIconModule } from '@angular/material/icon';
 import { LucideAngularModule, FileIcon } from 'lucide-angular';
-import { ThemeService } from '@services/theme';
+import { ThemeService } from '@app/core/services/theme';
 
 @Component({
   selector: 'app-root',

@@ -11,10 +11,10 @@ import {
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { ThemeService } from '@services/theme';
-import { MockDataService, ArticleData, CodeExample } from '@services/mock-data.service';
-import { SidebarComponent } from '@components/sidebar/sidebar';
-import { CodeBlockComponent } from '@components/code-block/code-block';
+import { ThemeService } from '@app/core/services/theme';
+import { MockDataService, ArticleData, CodeExample } from '@app/core/services/mock-data.service';
+import { SidebarComponent } from '@app/shared/components/sidebar/sidebar';
+import { CodeBlockComponent } from '@app/shared/components/code-block/code-block';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({

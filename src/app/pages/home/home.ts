@@ -1,7 +1,7 @@
 import { Component, inject, Input, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BlogCardComponent } from '@components/blog-card/blog-card';
-import { ThemeService } from '@services/theme';
+import { BlogCardComponent } from '@app/shared/components/blog-card/blog-card';
+import { ThemeService } from '@app/core/services/theme';
 
 @Component({
   selector: 'app-home',

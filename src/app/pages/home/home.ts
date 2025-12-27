@@ -1,10 +1,15 @@
 // home.component.ts - Versión simplificada usando el componente
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
+import { BlogCardComponent } from '@app/shared/components/blog-card/blog-card';
+import { ThemeService } from '@app/core/services/theme';
+=======
 import { BlogCardComponent } from '@components/blog-card/blog-card';
 import { PaginationComponent } from '@components/pagination/pagination';
 import { ThemeService } from '@services/theme';
 import { MockDataService } from '@services/mock-data.service';
+>>>>>>> main
 
 @Component({
   selector: 'app-home',

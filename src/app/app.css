@@ -1,0 +1,156 @@
+/* ===== DASHBOARD SPECIFIC UTILITIES ===== */
+
+/* Dashboard color utilities */
+.bg-card-dark {
+  background-color: #1F2937; /* surface-dark */
+}
+
+.dark .bg-card-dark {
+  background-color: #1F2937;
+}
+
+.bg-card-hover {
+  background-color: #374151; /* gray-700 */
+}
+
+.dark .bg-card-hover {
+  background-color: #374151;
+}
+
+.text-subtle-text {
+  color: #9CA3AF; /* gray-400 */
+}
+
+.dark .text-subtle-text {
+  color: #9CA3AF;
+}
+
+/* Dashboard spacing utilities */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Dashboard animation utilities */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.group-hover\:scale-110:hover {
+  transform: scale(1.1);
+}
+
+/* Dashboard icon sizes */
+.text-\[18px\] {
+  font-size: 18px;
+}
+
+.text-\[20px\] {
+  font-size: 20px;
+}
+
+/* Dashboard border utilities */
+.border-primary\/30 {
+  border-color: rgb(190 24 93 / 0.3); /* primary with 30% opacity */
+}
+
+.border-green-500\/20 {
+  border-color: rgb(34 197 94 / 0.2);
+}
+
+.border-yellow-500\/20 {
+  border-color: rgb(234 179 8 / 0.2);
+}
+
+/* Dashboard background opacity utilities */
+.bg-emerald-500\/10 {
+  background-color: rgb(34 197 94 / 0.1);
+}
+
+.bg-orange-500\/10 {
+  background-color: rgb(249 115 22 / 0.1);
+}
+
+.bg-primary\/10 {
+  background-color: rgb(190 24 93 / 0.1);
+}
+
+.bg-green-500\/10 {
+  background-color: rgb(34 197 94 / 0.1);
+}
+
+.bg-yellow-500\/10 {
+  background-color: rgb(234 179 8 / 0.1);
+}
+
+/* Dashboard shadow utilities */
+.shadow-primary\/25 {
+  box-shadow: 0 10px 15px -3px rgb(190 24 93 / 0.25), 0 4px 6px -4px rgb(190 24 93 / 0.25);
+}
+
+/* Dashboard opacity utilities */
+.opacity-10 {
+  opacity: 0.1;
+}
+
+.group-hover\:opacity-20:hover {
+  opacity: 0.2;
+}
+
+/* Dashboard text colors */
+.text-emerald-500 {
+  color: #10B981;
+}
+
+.text-orange-500 {
+  color: #F97316;
+}
+
+/* Dashboard status badges */
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/* Dashboard table styles */
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
+.divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #E2E8F0;
+}
+
+.dark .divide-slate-800 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1E293B;
+}
+
+/* Dashboard responsive utilities */
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,12 +1,8 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD:src/app/shared/components/blog-card/blog-card.ts
-import { ThemeService } from '@app/core/services/theme';
-=======
 import { Router } from '@angular/router';
 import { ThemeService } from '@services/theme';
 import { BlogPost } from '@services/mock-data.service';
->>>>>>> main:src/app/components/blog-card/blog-card.ts
 
 @Component({
   selector: 'app-blog-card',

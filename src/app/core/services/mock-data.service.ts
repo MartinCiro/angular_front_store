@@ -231,6 +231,38 @@ export class MockDataService {
       tags: ['Trading', 'Tips', 'Strategies', 'Community'],
       content: `<h1>Squishy Trading Tips & Strategies</h1>`,
       codeExamples: []
+    },
+    {
+      id: '8',
+      title: "Squishy Trading Tips",
+      description: "Master the art of squishy trading with our expert tips and strategies.",
+      excerpt: "Master the art of squishy trading with our expert tips and strategies.",
+      imageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Trading",
+      category: "Trading",
+      author: "Trading Expert",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=TradingExpert",
+      publishDate: "14 de Mayo, 2024",
+      readTime: "6 min lectura",
+      views: 290,
+      tags: ['Trading', 'Tips', 'Strategies', 'Community'],
+      content: `<h1>Squishy Trading Tips & Strategies</h1>`,
+      codeExamples: []
+    },
+    {
+      id: '9',
+      title: "Squishy Trading Tips",
+      description: "Master the art of squishy trading with our expert tips and strategies.",
+      excerpt: "Master the art of squishy trading with our expert tips and strategies.",
+      imageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Trading",
+      category: "Trading",
+      author: "Trading Expert",
+      authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=TradingExpert",
+      publishDate: "14 de Mayo, 2024",
+      readTime: "6 min lectura",
+      views: 290,
+      tags: ['Trading', 'Tips', 'Strategies', 'Community'],
+      content: `<h1>Squishy Trading Tips & Strategies</h1>`,
+      codeExamples: []
     }
   ]);
 

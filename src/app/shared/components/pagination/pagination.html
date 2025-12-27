@@ -2,7 +2,7 @@
   <div [class]="getContainerClasses()">
     
     <!-- Información y selector de items por página -->
-    @if (showItemsPerPageSelector || currentRange) {
+    @if (showItemsPerPageSelector || currentRange()) {
       <div class="flex-1">
         @if (currentRange().total > 0) {
           <div [class]="getRangeInfoClasses()">

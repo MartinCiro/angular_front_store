@@ -1,3 +1,4 @@
+<!-- src/app/layout/dashboard-layout.html -->
 <!-- Main Layout Container -->
 <div class="flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300">
   
@@ -8,16 +9,18 @@
     <div class="lg:hidden">
       <button (click)="toggleMobileMenu()" 
               class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors">
-        <mat-icon class="text-slate-500 dark:text-subtle-text">
-          {{ isMobileMenuOpen() ? 'close' : 'menu' }}
-        </mat-icon>
+        @if (isMobileMenuOpen()) {
+          <i-lucide [name]="X" class="text-slate-500 dark:text-subtle-text w-5 h-5"></i-lucide>
+        } @else {
+          <i-lucide [name]="Menu" class="text-slate-500 dark:text-subtle-text w-5 h-5"></i-lucide>
+        }
       </button>
     </div>
     
     <!-- Logo & Brand (Desktop) -->
     <div class="hidden lg:flex items-center gap-3">
       <div class="bg-primary/20 flex items-center justify-center rounded-lg size-10">
-        <mat-icon class="text-primary">admin_panel_settings</mat-icon>
+        <i-lucide [name]="Shield" class="text-primary w-5 h-5"></i-lucide>
       </div>
       <h1 class="text-xl font-bold tracking-tight">Skuish Admin</h1>
     </div>
@@ -25,9 +28,7 @@
     <!-- Search Bar (Desktop) -->
     <div class="hidden md:flex flex-1 max-w-md mx-4">
       <div class="relative w-full">
-        <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-subtle-text text-[20px]">
-          search
-        </mat-icon>
+        <i-lucide [name]="Search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-subtle-text w-5 h-5"></i-lucide>
         <input type="text" 
                [value]="searchQuery()"
                (input)="onSearch($any($event.target).value)"
@@ -41,13 +42,13 @@
       
       <!-- Search Button (Mobile) -->
       <button class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors">
-        <mat-icon class="text-slate-500 dark:text-subtle-text">search</mat-icon>
+        <i-lucide [name]="Search" class="text-slate-500 dark:text-subtle-text w-5 h-5"></i-lucide>
       </button>
       
       <!-- Notifications -->
       <button class="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-surface-dark text-slate-500 dark:text-subtle-text transition-colors"
               (click)="clearNotifications()">
-        <mat-icon>notifications</mat-icon>
+        <i-lucide [name]="Bell" class="w-5 h-5"></i-lucide>
         @if (hasNotifications()) {
           <span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
         }
@@ -87,7 +88,7 @@
       <!-- Logo (Mobile) -->
       <div class="lg:hidden flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-800">
         <div class="bg-primary/20 flex items-center justify-center rounded-lg size-10">
-          <mat-icon class="text-primary">admin_panel_settings</mat-icon>
+          <i-lucide [name]="Shield" class="text-primary w-5 h-5"></i-lucide>
         </div>
         <h1 class="text-xl font-bold tracking-tight">Skuish Admin</h1>
       </div>
@@ -105,7 +106,7 @@
                 <a [routerLink]="item.route || '#'"
                    [class]="(item.isActive ? 'bg-primary text-white' : 'text-slate-500 dark:text-subtle-text hover:bg-slate-100 dark:hover:bg-surface-dark') + ' flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors'"
                    (click)="onNavItemClick(item)">
-                  <mat-icon class="text-[20px]">{{ item.icon }}</mat-icon>
+                  <i-lucide [name]="item.icon" class="w-5 h-5"></i-lucide>
                   <p class="text-sm font-medium">{{ item.label }}</p>
                 </a>
               }
@@ -124,7 +125,7 @@
               <a [routerLink]="item.route || '#'"
                  class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-subtle-text hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors"
                  (click)="onNavItemClick(item)">
-                <mat-icon class="text-[20px]">{{ item.icon }}</mat-icon>
+                <i-lucide [name]="item.icon" class="w-5 h-5"></i-lucide>
                 <p class="text-sm font-medium">{{ item.label }}</p>
               </a>
             }
@@ -143,7 +144,7 @@
             </div>
             <button (click)="onLogout()" 
                     class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
-              <mat-icon class="text-slate-500 dark:text-subtle-text text-[18px]">logout</mat-icon>
+              <i-lucide [name]="LogOut" class="text-slate-500 dark:text-subtle-text w-4 h-4"></i-lucide>
             </button>
           </div>
         </div>
@@ -157,7 +158,7 @@
       <!-- View Tabs (Mobile) -->
       <div class="lg:hidden flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-dark overflow-x-auto">
         @for (view of viewOptions(); track view) {
-            <button (click)="onChangeView(view)"
+          <button (click)="onChangeView(view)"
                   [class]="(currentView() === view ? 'border-b-2 border-primary text-primary' : 'text-slate-500 dark:text-subtle-text') + ' flex-1 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors'">
             @switch (view) {
               @case ('overview') { Panel }

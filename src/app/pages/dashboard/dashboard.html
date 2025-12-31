@@ -1,3 +1,4 @@
+<!-- src/app/pages/dashboard/dashboard.html -->
 <!-- Main Dashboard Container -->
 <div [ngClass]="containerClasses()" class="min-h-screen transition-colors duration-300">
   
@@ -45,13 +46,13 @@
         <div class="flex gap-3">
           <button (click)="exportData('json')"
                   class="px-4 py-2 rounded-lg bg-card-dark border border-slate-700 hover:bg-card-hover transition text-sm font-medium flex items-center gap-2">
-            <mat-icon class="text-sm">download</mat-icon>
+            <i-lucide [name]="Download" class="text-sm"></i-lucide>
             Exportar Datos
           </button>
           
           <button (click)="refreshDashboard()"
                   class="px-4 py-2 rounded-lg bg-primary hover:bg-blue-600 transition text-white text-sm font-medium shadow-lg shadow-primary/25 flex items-center gap-2">
-            <mat-icon class="text-sm">refresh</mat-icon>
+            <i-lucide [name]="RefreshCw" class="text-sm"></i-lucide>
             Actualizar
           </button>
         </div>
@@ -77,7 +78,7 @@
           <section>
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-xl font-bold flex items-center gap-2">
-                <mat-icon class="text-primary">article</mat-icon>
+                <i-lucide [name]="FileText" class="text-primary"></i-lucide>
                 Gestión de Entradas Recientes
               </h3>
               <a [routerLink]="['/dashboard/posts']" 
@@ -134,7 +135,7 @@
             </p>
             <!-- Posts management content will go here -->
             <div class="text-center py-12 text-subtle-text">
-              <mat-icon class="text-4xl mb-4 opacity-50">edit_document</mat-icon>
+              <i-lucide [name]="Edit" class="text-4xl mb-4 opacity-50"></i-lucide>
               <p>Vista de gestión de entradas</p>
               <p class="text-sm mt-2">Esta funcionalidad está en desarrollo</p>
             </div>
@@ -152,7 +153,7 @@
             </p>
             <!-- Users management content will go here -->
             <div class="text-center py-12 text-subtle-text">
-              <mat-icon class="text-4xl mb-4 opacity-50">group</mat-icon>
+              <i-lucide [name]="Users" class="text-4xl mb-4 opacity-50"></i-lucide>
               <p>Vista de gestión de usuarios</p>
               <p class="text-sm mt-2">Esta funcionalidad está en desarrollo</p>
             </div>
@@ -170,7 +171,7 @@
             </p>
             <!-- Analytics content will go here -->
             <div class="text-center py-12 text-subtle-text">
-              <mat-icon class="text-4xl mb-4 opacity-50">analytics</mat-icon>
+              <i-lucide [name]="BarChart" class="text-4xl mb-4 opacity-50"></i-lucide>
               <p>Vista de análisis y estadísticas</p>
               <p class="text-sm mt-2">Esta funcionalidad está en desarrollo</p>
             </div>
@@ -191,8 +192,3 @@
     
   </main>
 </div>
-
-<app-dashboard-footer
-  [appName]="'Skuish Study Admin'"
-  [showLastUpdate]="true">
-</app-dashboard-footer>

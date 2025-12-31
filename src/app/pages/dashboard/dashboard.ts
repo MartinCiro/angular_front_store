@@ -1,7 +1,8 @@
+// src/app/pages/dashboard/dashboard.ts
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import { LucideAngularModule } from 'lucide-angular';
 
 // Core services
 import { ThemeService } from '@app/core/services/theme';
@@ -22,13 +23,27 @@ import { RecentUsersComponent } from '@app/shared/components/recent-users/recent
 // Models
 import { DashboardStats, RecentPost, RecentUser, SystemStatus } from '@app/core/models/dashboard.model';
 
+// Íconos
+import {
+  Download,
+  RefreshCw,
+  FileText,
+  FileEdit,
+  Users,
+  UserPlus,
+  BarChart,
+  Edit,
+  Trash2,
+  Eye
+} from 'lucide-angular';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule,
-    MatIconModule,
+    LucideAngularModule,
     DashboardLayoutComponent,
     DashboardFooterComponent,
     StatCardComponent,
@@ -63,6 +78,18 @@ export class DashboardComponent implements OnInit {
   // 📱 UI state signals
   sidebarOpen = signal(true);
   currentView = signal<'overview' | 'posts' | 'users' | 'analytics'>('overview');
+
+  // ✅ ÍCONOS COMO PROPIEDADES PÚBLICAS
+  readonly Download = Download;
+  readonly RefreshCw = RefreshCw;
+  readonly FileText = FileText;
+  readonly FileEdit = FileEdit;
+  readonly Users = Users;
+  readonly UserPlus = UserPlus;
+  readonly BarChart = BarChart;
+  readonly Edit = Edit;
+  readonly Trash2 = Trash2;
+  readonly Eye = Eye;
 
   // 🎨 Computed properties for dynamic classes
   mainContentClasses = computed(() => 
@@ -142,7 +169,7 @@ export class DashboardComponent implements OnInit {
         title: 'Entradas Publicadas',
         value: 142,
         change: '+8 esta semana',
-        icon: 'article',
+        icon: 'file-text',
         iconColor: 'text-emerald-500',
         bgColor: 'bg-emerald-500/10',
         trend: 'positive'
@@ -152,7 +179,7 @@ export class DashboardComponent implements OnInit {
         title: 'Borradores Pendientes',
         value: 15,
         change: 'Por revisar',
-        icon: 'edit_note',
+        icon: 'file-edit',
         iconColor: 'text-orange-500',
         bgColor: 'bg-orange-500/10',
         trend: 'neutral'
@@ -162,7 +189,7 @@ export class DashboardComponent implements OnInit {
         title: 'Usuarios Registrados',
         value: 1204,
         change: '+45 nuevos',
-        icon: 'group_add',
+        icon: 'user-plus',
         iconColor: 'text-primary',
         bgColor: 'bg-primary/10',
         trend: 'positive'
@@ -202,7 +229,7 @@ export class DashboardComponent implements OnInit {
         name: 'Maria Gonzalez',
         email: 'maria.g@example.com',
         role: 'Editor',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDRcFTP7mvY_nypAzkjevNdkMQK_BrgvEzqnE9csL-9o5qCl0ANlrEi9sPzTxy0-R346oSZdKMRGV4i_947N66Q9v3YdHkr42C7uSaYF6OVphQTTF7lRNkTPZYp5PJ-B6yvWDxtfXpKI_CjEUxGjlat_OTeBR3YlACuY5HKN0fzNJc7K8TqQEa0tn9Y6551harYufWpH5ne0wg7YFnqXlEPQKWhqxZLSOZq1-O3NStbJAJ8qNvxAmEC1UN0IOStlJeutd7VnR6lvDY',
+        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDRcFTP7mvY_nypAzkjevNdkMQK_BrgvEzqnE9csL-9o5qCl0ANlrEi9sPzTxy0-R346oSZdKMRGV4i_947N66Q9v3YdHkr42C7uSaYF6OVphQTTF7lRNkTPZYp5PJ-B6yvWDxtfXpKI_CjEUxGjlat_OTeBR3YlACuY5HKN0fzNJc7K8TqQEa0tn9Y6551harYufWpH5ne0wg7YFnqXlEPQKWhqxZLSOZq1-O3NStbJAJ8qNvxAmEC1UN0IOStlJeutd7VnR6lvDY  ',
         joinDate: 'Hace 2 días'
       },
       {
@@ -210,7 +237,7 @@ export class DashboardComponent implements OnInit {
         name: 'Carlos Ruiz',
         email: 'carlos.r@example.com',
         role: 'Autor',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBEPPuCEyOMPazYpCxAa-A_EvdTAJ8ekR0gG2vnFyfZoU8ppBWTa8jCbBq6CPDq7Lm0cMgYTYQXKKxQuOPxUIPu2lM36smat4GVZ4uaBE_LN0DJsxbt5FcWcfVrYeWmukVC9ifbfvff4cplkykdgT7eifoMEeq1UJdRgQCuYT9ulM3loiTzVa4SaARUAo9cCrfwg34SsTgCvVebfAiFi_HD3KVDcAPRLq2vUx-6rbpFLHhkJP4R7S8xrVWPsgdeKKZMthyTNOCWyCw',
+        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBEPPuCEyOMPazYpCxAa-A_EvdTAJ8ekR0gG2vnFyfZoU8ppBWTa8jCbBq6CPDq7Lm0cMgYTYQXKKxQuOPxUIPu2lM36smat4GVZ4uaBE_LN0DJsxbt5FcWcfVrYeWmukVC9ifbfvff4cplkykdgT7eifoMEeq1UJdRgQCuYT9ulM3loiTzVa4SaARUAo9cCrfwg34SsTgCvVebfAiFi_HD3KVDcAPRLq2vUx-6rbpFLHhkJP4R7S8xrVWPsgdeKKZMthyTNOCWyCw  ',
         joinDate: 'Hace 1 semana'
       }
     ]);

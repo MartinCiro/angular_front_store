@@ -1,8 +1,12 @@
+// src/app/pages/users-management/users-management.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { LucideAngularModule } from 'lucide-angular';
 import { DashboardLayoutComponent } from '@app/layout/dashboard-layout';
+
+// ✅ Íconos reutilizables desde tu librería compartida
+import { UserPlus, Edit, Trash2, Eye } from '@app/shared/icons/lucide-icons';
 
 interface User {
   id: number;
@@ -17,12 +21,22 @@ interface User {
 @Component({
   selector: 'app-users-management',
   standalone: true,
-  imports: [CommonModule, MatIconModule, RouterModule, DashboardLayoutComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    LucideAngularModule,
+    DashboardLayoutComponent
+  ],
   templateUrl: './users-management.html',
   styleUrls: ['./users-management.css']
 })
 export class UsersManagementComponent {
-  // Datos mock para usuarios
+  // ✅ Expón los íconos como propiedades públicas
+  readonly UserPlus = UserPlus;
+  readonly Edit = Edit;
+  readonly Trash2 = Trash2;
+  readonly Eye = Eye;
+
   users: User[] = [
     { id: 1, name: 'Maria Gonzalez', email: 'maria.g@example.com', role: 'Editor', joinDate: '2024-01-10', status: 'active', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria' },
     { id: 2, name: 'Carlos Ruiz', email: 'carlos.r@example.com', role: 'Autor', joinDate: '2024-01-12', status: 'active', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos' },
@@ -31,7 +45,6 @@ export class UsersManagementComponent {
     { id: 5, name: 'Laura Martinez', email: 'laura.m@example.com', role: 'Editor', joinDate: '2024-01-08', status: 'inactive', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Laura' }
   ];
 
-  // Métodos helper
   getStatusColor(status: User['status']): string {
     switch (status) {
       case 'active': return 'bg-green-500/10 text-green-500';

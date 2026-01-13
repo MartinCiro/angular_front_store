@@ -23,7 +23,7 @@ import { RecentUsersComponent } from '@app/shared/components/recent-users/recent
 // Models
 import { DashboardStats, RecentPost, RecentUser, SystemStatus } from '@app/core/models/dashboard.model';
 
-// Íconos
+// ✅ Íconos reutilizables desde librería compartida
 import {
   Download,
   RefreshCw,
@@ -35,7 +35,7 @@ import {
   Edit,
   Trash2,
   Eye
-} from 'lucide-angular';
+} from '@app/shared/icons/lucide-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
   sidebarOpen = signal(true);
   currentView = signal<'overview' | 'posts' | 'users' | 'analytics'>('overview');
 
-  // ✅ ÍCONOS COMO PROPIEDADES PÚBLICAS
+  // ✅ ÍCONOS COMO PROPIEDADES PÚBLICAS (desde librería compartida)
   readonly Download = Download;
   readonly RefreshCw = RefreshCw;
   readonly FileText = FileText;
@@ -229,7 +229,7 @@ export class DashboardComponent implements OnInit {
         name: 'Maria Gonzalez',
         email: 'maria.g@example.com',
         role: 'Editor',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDRcFTP7mvY_nypAzkjevNdkMQK_BrgvEzqnE9csL-9o5qCl0ANlrEi9sPzTxy0-R346oSZdKMRGV4i_947N66Q9v3YdHkr42C7uSaYF6OVphQTTF7lRNkTPZYp5PJ-B6yvWDxtfXpKI_CjEUxGjlat_OTeBR3YlACuY5HKN0fzNJc7K8TqQEa0tn9Y6551harYufWpH5ne0wg7YFnqXlEPQKWhqxZLSOZq1-O3NStbJAJ8qNvxAmEC1UN0IOStlJeutd7VnR6lvDY  ',
+        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDRcFTP7mvY_nypAzkjevNdkMQK_BrgvEzqnE9csL-9o5qCl0ANlrEi9sPzTxy0-R346oSZdKMRGV4i_947N66Q9v3YdHkr42C7uSaYF6OVphQTTF7lRNkTPZYp5PJ-B6yvWDxtfXpKI_CjEUxGjlat_OTeBR3YlACuY5HKN0fzNJc7K8TqQEa0tn9Y6551harYufWpH5ne0wg7YFnqXlEPQKWhqxZLSOZq1-O3NStbJAJ8qNvxAmEC1UN0IOStlJeutd7VnR6lvDY',
         joinDate: 'Hace 2 días'
       },
       {
@@ -237,7 +237,7 @@ export class DashboardComponent implements OnInit {
         name: 'Carlos Ruiz',
         email: 'carlos.r@example.com',
         role: 'Autor',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBEPPuCEyOMPazYpCxAa-A_EvdTAJ8ekR0gG2vnFyfZoU8ppBWTa8jCbBq6CPDq7Lm0cMgYTYQXKKxQuOPxUIPu2lM36smat4GVZ4uaBE_LN0DJsxbt5FcWcfVrYeWmukVC9ifbfvff4cplkykdgT7eifoMEeq1UJdRgQCuYT9ulM3loiTzVa4SaARUAo9cCrfwg34SsTgCvVebfAiFi_HD3KVDcAPRLq2vUx-6rbpFLHhkJP4R7S8xrVWPsgdeKKZMthyTNOCWyCw  ',
+        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBEPPuCEyOMPazYpCxAa-A_EvdTAJ8ekR0gG2vnFyfZoU8ppBWTa8jCbBq6CPDq7Lm0cMgYTYQXKKxQuOPxUIPu2lM36smat4GVZ4uaBE_LN0DJsxbt5FcWcfVrYeWmukVC9ifbfvff4cplkykdgT7eifoMEeq1UJdRgQCuYT9ulM3loiTzVa4SaARUAo9cCrfwg34SsTgCvVebfAiFi_HD3KVDcAPRLq2vUx-6rbpFLHhkJP4R7S8xrVWPsgdeKKZMthyTNOCWyCw',
         joinDate: 'Hace 1 semana'
       }
     ]);
@@ -329,7 +329,7 @@ export class DashboardComponent implements OnInit {
     
     if (format === 'json') {
       const dataStr = JSON.stringify(exportData, null, 2);
-      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
       this.triggerDownload(dataUri, 'dashboard-export.json');
     }
   }

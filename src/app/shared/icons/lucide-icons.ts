@@ -1,0 +1,78 @@
+// src/app/shared/icons/lucide-icons.ts
+// ✅ Exporta todos los íconos que usas en tu app
+import {
+  Shield,
+  Menu,
+  X,
+  Search,
+  Bell,
+  LogOut,
+  LayoutDashboard,
+  FileText,
+  Users,
+  Key,
+  Settings,
+  BarChart,
+  Download,
+  Facebook,
+  Twitter,
+  Instagram,
+  RefreshCw,
+  FileEdit,
+  UserPlus,
+  Edit,
+  Trash2,
+  Eye
+} from 'lucide-angular';
+
+// Mapa de íconos para registro global (si usas cadenas en el futuro)
+export const LucideIconMap = {
+  shield: Shield,
+  menu: Menu,
+  x: X,
+  search: Search,
+  bell: Bell,
+  'log-out': LogOut,
+  'layout-dashboard': LayoutDashboard,
+  'file-text': FileText,
+  users: Users,
+  key: Key,
+  settings: Settings,
+  'bar-chart': BarChart,
+  download: Download,
+  facebook: Facebook,
+  twitter: Twitter,
+  instagram: Instagram,
+  'refresh-cw': RefreshCw,
+  'file-edit': FileEdit,
+  'user-plus': UserPlus,
+  edit: Edit,
+  'trash-2': Trash2,
+  eye: Eye
+};
+
+// ✅ Exporta cada ícono individualmente para usar como objeto
+export {
+  Shield,
+  Menu,
+  X,
+  Search,
+  Bell,
+  LogOut,
+  LayoutDashboard,
+  FileText,
+  Users,
+  Key,
+  Settings,
+  BarChart,
+  Download,
+  Facebook,
+  Twitter,
+  Instagram,
+  RefreshCw,
+  FileEdit,
+  UserPlus,
+  Edit,
+  Trash2,
+  Eye
+};

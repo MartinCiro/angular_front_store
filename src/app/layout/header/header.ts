@@ -34,7 +34,6 @@ export class HeaderComponent {
   // Icono dinámico para tema
   themeIcon = computed(() => this.isDarkMode() ? this.Sun : this.Moon);
   
-  // ✅ NUEVO: Signals computados para clases
   // Logo
   logoClasses = computed(() => ({
     'text-primary': this.isDarkMode(),

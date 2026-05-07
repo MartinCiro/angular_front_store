@@ -76,7 +76,6 @@ export class DashboardLayoutComponent {
   readonly Twitter = Twitter;
   readonly Instagram = Instagram;
 
-  // ✅ NavItems: usa los íconos como objetos
   mainNavItems = signal<NavItem[]>([
     { label: 'Panel Principal', icon: this.LayoutDashboard, route: '/dashboard', isActive: true, type: 'item' },
     { label: 'Entradas', icon: this.FileText, route: '/dashboard/posts', type: 'item' },
@@ -159,4 +158,8 @@ export class DashboardLayoutComponent {
       console.log('Navigating to:', item.route);
     }
   }
+
+  titleColor = computed(() => 
+    this.isDarkMode() ? 'text-yellow-400' : 'text-gray-800'
+  );
 }

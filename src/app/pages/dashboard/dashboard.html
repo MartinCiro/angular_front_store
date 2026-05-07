@@ -1,14 +1,5 @@
-<!-- src/app/pages/dashboard/dashboard.html -->
 <!-- Main Dashboard Container -->
 <div [ngClass]="containerClasses()" class="min-h-screen transition-colors duration-300">
-  
-  <!-- Dashboard Layout Component -->
-  <app-dashboard-layout 
-    [isSidebarOpen]="sidebarOpen()" 
-    (sidebarToggle)="toggleSidebar()"
-    [currentView]="currentView()"
-    (viewChange)="changeView($event)">
-  </app-dashboard-layout>
   
   <!-- Main Content Area -->
   <main [ngClass]="mainContentClasses()" class="flex-1 pt-16">
@@ -179,14 +170,7 @@
         </div>
         }
         
-      </div>
-      
-      <!-- Footer -->
-      <app-dashboard-footer
-        [appName]="'Skuish Study Admin'"
-        [showLastUpdate]="true">
-      </app-dashboard-footer>
-      
+      </div>      
     </div>
     }
     

@@ -9,7 +9,6 @@ import { ThemeService } from '@app/core/services/theme';
 import { DashboardService } from '@app/core/services/dashboard.service';
 
 // Layout components
-import { DashboardLayoutComponent } from '@app/layout/dashboard-layout';
 import { DashboardFooterComponent } from '@app/layout/dashboard-footer/dashboard-footer';
 
 // Shared components
@@ -44,7 +43,6 @@ import {
     CommonModule,
     RouterModule,
     LucideAngularModule,
-    DashboardLayoutComponent,
     DashboardFooterComponent,
     StatCardComponent,
     RecentPostsTableComponent,
@@ -94,7 +92,7 @@ export class DashboardComponent implements OnInit {
   // 🎨 Computed properties for dynamic classes
   mainContentClasses = computed(() => 
     this.sidebarOpen() 
-      ? 'lg:ml-72 transition-all duration-300 ease-in-out' 
+      ? 'lg:ml-0 transition-all duration-300 ease-in-out' 
       : 'lg:ml-0 transition-all duration-300 ease-in-out'
   );
 

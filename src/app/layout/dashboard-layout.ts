@@ -103,7 +103,7 @@ export class DashboardLayoutComponent {
   );
 
   mainContentClasses = computed(() =>
-    this.isSidebarOpen() ? 'lg:ml-72' : 'lg:ml-20'
+    this.isSidebarOpen() ? 'lg:ml-0' : 'lg:ml-20'
   );
 
   @HostBinding('class.dark') get darkMode() {
